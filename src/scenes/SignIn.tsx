@@ -1,40 +1,37 @@
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
   ImageBackground,
-  Linking,
-  AppRegistry
+  Linking
 } from 'react-native';
-import  {StackNavigator} from 'react-navigation'
-import Menu from './Menu';
-import AddFollower from './AddFollower'
+// import { StackNavigator } from 'react-navigation'
+// import Menu from './Menu';
+// import AddFollower from './AddFollower'
 
-import Logo from '../general/Logo'
-import Login from '../general/Login'
-import BigButton from '../general/BigButton'
+// import Logo from '../components/Logo'
+// import Login from '../components/Login'
+import Button from '../components/Button';
 
 
-export default class SignIn extends Component{
+export default class SignIn extends Component {
   static navigationOptions = {
     title: 'SignIn',
   };
 
   render() {
-    const {askContainer, instructions, container}=styles;
+    const { askContainer, instructions, container } = styles;
     return (
       <ImageBackground source={require('../../img/backG.png')} style={container}>
-        <Logo/>
-        <Login/>
-        <BigButton />
+        {/* <Logo />
+        <Login /> */}
+        <Button text="Iniciar Sesión" />
         <View style={askContainer}>
           <View style={instructions}>
-            <Text style={{color:'white'}} textAlign= 'center'>Nuevo en Engine?</Text>
-            <Text style={{textAlign: 'center'}} 
-            textAlign= 'center'
-            onPress={() => Linking.openURL('http://www.google.com')}
+            <Text style={{ color: 'white', textAlign: 'center' }} >Nuevo en Engine?</Text>
+            <Text style={{ textAlign: 'center' }}
+              onPress={() => Linking.openURL('http://www.google.com')}
             > Crea una Cuenta</Text>
           </View>
         </View>
@@ -55,13 +52,13 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     // backgroundColor: 'black',
-    width:null,
+    width: null,
     height: null,
     // resizeMode:'stretch',
     // resizeMode: 'cover',
   },
-  askContainer:{
-    flex:2,
+  askContainer: {
+    flex: 2,
     // backgroundColor: 'pink',
     marginBottom: 5,
   },
