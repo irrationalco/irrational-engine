@@ -5,6 +5,7 @@ interface IButtonProps {
     buttonStyle?: any;
     textStyle?: any;
     text: string;
+    onClick?: Function;
 }
 
 const Button: React.SFC<IButtonProps> = (props) => {
