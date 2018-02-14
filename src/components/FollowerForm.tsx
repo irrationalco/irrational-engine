@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet, TextInput } from 'react-native'
+import React from 'react'
+import { View, StyleSheet, TextInput } from 'react-native'
 
 const FollowerForm: React.SFC = () => {
     return (
@@ -28,6 +28,8 @@ const FollowerForm: React.SFC = () => {
         </View>
     );
 }
+
+export default FollowerForm;
 
 const styles = StyleSheet.create({
     place: {
@@ -70,4 +72,5 @@ const styles = StyleSheet.create({
         // paddingVertical:50,
     },
 });
+
 

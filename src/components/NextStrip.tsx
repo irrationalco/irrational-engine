@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet, Alert } from 'react-native'
+import { Text, View, StyleSheet, Alert } from 'react-native'
 import Button from './Button';
 
-export default class NextStrip extends Component {
+interface INextStripProps {
+    tstyle?: any;
+}
+
+export default class NextStrip extends Component<INextStripProps> {
 
     redirectWebsite() {
         Alert.alert('You tapped the Next Button!')
     }
 
     render() {
-        const { tstyle, btn } = styles;
+        // const { tstyle, btn } = styles;
         return (
-            <View style={tstyle}>
+            <View style={this.props.tstyle}>
                 {/* <Text style={{justifyContent:'flex-end'}}> */}
                 <Text style={{ marginRight: 40 }}>
                     <Button

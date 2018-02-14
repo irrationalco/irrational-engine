@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
 
 const Logo: React.SFC = () => {
     return (
@@ -12,6 +12,8 @@ const Logo: React.SFC = () => {
         </View>
     );
 }
+
+export default Logo;
 
 const styles = StyleSheet.create({
     vstyle: {

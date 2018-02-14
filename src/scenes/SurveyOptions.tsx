@@ -4,11 +4,11 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import  {StackNavigator} from 'react-navigation'
+// import { StackNavigator } from 'react-navigation'
 
-export default class SurveyOptions extends Component{
+export default class SurveyOptions extends Component {
   render() {
-    const {container}=styles;
+    const { container } = styles;
     return (
       <ImageBackground source={require('../../img/backG.png')} style={container}>
         <Text>Hey</Text>
@@ -20,7 +20,7 @@ export default class SurveyOptions extends Component{
 const styles = {
   container: {
     flex: 1,
-    width:null,
+    width: null,
     height: null,
   },
 };
