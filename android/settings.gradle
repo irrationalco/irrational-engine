@@ -1,0 +1,3 @@
+rootProject.name = 'irrationalEngine'
+
+include ':app'
