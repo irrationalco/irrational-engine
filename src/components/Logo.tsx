@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Image, StyleSheet } from 'react-native'
+import { colors } from '../Styles'
 
 const Logo: React.SFC = () => {
     return (
@@ -8,7 +9,6 @@ const Logo: React.SFC = () => {
                 source={require('../../img/EngineLogo-02.png')}
                 style={styles.image}
             />
-            {/* <Text>Hello</Text> */}
         </View>
     );
 }
@@ -17,13 +17,9 @@ export default Logo;
 
 const styles = StyleSheet.create({
     vstyle: {
-        // backgroundColor: '#F5FCFF',
-        flex: 8,
-        flexDirection: 'row',
-        // opacity: 70,
-        // flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+        backgroundColor: colors.blue,
+        display: 'flex',
+        flexDirection: 'row'
     },
     image: {
         flex: 1,

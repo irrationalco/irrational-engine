@@ -2,32 +2,25 @@ import React from 'react';
 import { Text, TouchableOpacity, ViewStyle, TextStyle, StyleSheet } from 'react-native';
 import { colors } from '../Styles';
 
-interface IButtonProps {
+interface ILinkProps {
     style?: ViewStyle;
     textStyle?: TextStyle;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
-const Button: React.SFC<IButtonProps> = (props) => {
+const Link: React.SFC<ILinkProps> = (props) => {
     return (
-        <TouchableOpacity style={[defaultStyles.button, props.style]} onPress={() => props.onClick()} >
+        <TouchableOpacity style={props.style} onPress={() => props.onClick()} >
             <Text style={[defaultStyles.text, props.textStyle]} >{props.children}</Text>
         </TouchableOpacity>
     );
 };
 
 const defaultStyles = StyleSheet.create({
-    button: {
-        alignSelf: 'center',
-        backgroundColor: colors.blue,
-        borderRadius: 15,
-        paddingHorizontal: 20,
-        paddingVertical: 5
-    },
     text: {
-        color: colors.black,
+        color: colors.purple,
         fontSize: 15
     }
 })
 
-export default Button;
+export default Link;
