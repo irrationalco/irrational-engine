@@ -62,7 +62,10 @@
         "object-literal-sort-keys": true,
         "prefer-const": true,
         "prefer-readonly": true,
-        "trailing-comma": true,
+        "trailing-comma": [
+            true,
+            "always"
+        ],
         "align": true,
         "arrow-parens": true,
         "array-type": [
@@ -71,7 +74,7 @@
         ],
         "arrow-return-shorthand": true,
         "binary-expression-operand-order": true,
-        "calss-name": true,
+        "class-name": true,
         "comment-format": [
             true,
             "check-space"
@@ -85,7 +88,6 @@
         "number-literal-format": true,
         "object-literal-shorthand": true,
         "ordered-imports": true,
-        "prefer-function-over-method": true,
         "prefer-switch": true,
         "prefer-template": true,
         "quotemark": [
@@ -110,6 +112,7 @@
         "variable-name": [
             true,
             "check-format",
+            "allow-pascal-case",
             "ban-keywords"
         ],
         "no-shadowed-variable": true,

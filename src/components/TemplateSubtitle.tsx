@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import React from 'react';
+import { Text, View } from 'react-native';
 
 interface ITemplateSubtitleProps {
     vstyle?: any;
@@ -17,11 +17,11 @@ const TemplateSubtitle: React.SFC<ITemplateSubtitleProps> = (props) => {
             {/* <Text>Hello</Text> */}
         </View>
     );
-}
+};
 
 TemplateSubtitle.defaultProps = {
-    vstyle: {},
     provinceList: [],
+    vstyle: {},
 };
 
 export default TemplateSubtitle;

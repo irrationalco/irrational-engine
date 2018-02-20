@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import {
+  Linking,
   StyleSheet,
   Text,
-  View,
-  Linking
+  View
 } from 'react-native';
 // import { StackNavigator } from 'react-navigation'
 // import Menu from './Menu';
 // import AddFollower from './AddFollower'
 
-import Logo from '../components/Logo'
-import Login from '../components/Login'
 import Button from '../components/Button';
 import Link from '../components/Link';
+import Login from '../components/Login';
+import Logo from '../components/Logo';
 
-import { colors } from '../Styles'
+import { colors } from '../Styles';
 
 
 export default class SignIn extends Component {
@@ -46,10 +46,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   createAccountContainer: {
-    padding: 5,
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20
+    marginTop: 20,
+    padding: 5,
   },
   link: {
     color: colors.purple,

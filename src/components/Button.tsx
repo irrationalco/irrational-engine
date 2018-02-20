@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, ViewStyle, TextStyle, StyleSheet } from 'react-native';
+import { StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import { colors } from '../Styles';
 
 interface IButtonProps {
@@ -28,6 +28,6 @@ const defaultStyles = StyleSheet.create({
         color: colors.black,
         fontSize: 15
     }
-})
+});
 
 export default Button;

@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Text, View, StyleSheet, Alert } from 'react-native'
+import React, { Component } from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import Button from './Button';
 
 interface INextStripProps {
@@ -9,7 +9,7 @@ interface INextStripProps {
 export default class NextStrip extends Component<INextStripProps> {
 
     redirectWebsite() {
-        Alert.alert('You tapped the Next Button!')
+        Alert.alert('You tapped the Next Button!');
     }
 
     render() {
@@ -19,11 +19,10 @@ export default class NextStrip extends Component<INextStripProps> {
                 {/* <Text style={{justifyContent:'flex-end'}}> */}
                 <Text style={{ marginRight: 40 }}>
                     <Button
-                        buttonStyle={{ margin: 25, padding: 11, height: 45, width: 100, overflow: 'hidden', borderRadius: 4, backgroundColor: 'rgb(34,43,86)', }}
+                        style={styles.btn}
                         onClick={this.redirectWebsite}
-                        // style={btn}
-                        text={"Guardar"}
-                    />
+                    // style={btn}
+                    >Guardar</Button>
                 </Text>
             </View>
         );
@@ -31,6 +30,15 @@ export default class NextStrip extends Component<INextStripProps> {
 }
 
 const styles = StyleSheet.create({
+    btn: {
+        backgroundColor: 'rgb(34,43,86)',
+        borderRadius: 4,
+        height: 45,
+        margin: 25,
+        overflow: 'hidden',
+        padding: 11,
+        width: 100,
+    },
     tstyle: {
         // backgroundColor: '#F5FCFF',
         flex: 1,
@@ -42,13 +50,6 @@ const styles = StyleSheet.create({
         // flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
-    },
-    btn: {
-        flex: 1,
-        color: 'white',
-        // marginRight:15,
-        fontSize: 15,
-        // marginTop:10,
     },
 });
 
