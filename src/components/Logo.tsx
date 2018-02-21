@@ -1,10 +1,14 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, View, ViewStyle } from 'react-native';
 import { colors } from '../Styles';
 
-const Logo: React.SFC = () => {
+interface ILogoProps {
+    style?: ViewStyle;
+}
+
+const Logo: React.SFC<ILogoProps> = (props: ILogoProps) => {
     return (
-        <View style={styles.vstyle}>
+        <View style={[styles.vstyle, props.style]}>
             <Image
                 // tslint:disable-next-line
                 source={require('../../img/EngineLogo-02.png')}
@@ -16,17 +20,20 @@ const Logo: React.SFC = () => {
 
 export default Logo;
 
+const logoWidthPercentage = 0.78;
+
 const styles = StyleSheet.create({
     image: {
         flex: 1,
-        height: 300,
+        marginVertical: 15,
+        maxWidth: Dimensions.get('screen').width * logoWidthPercentage,
         resizeMode: 'contain',
-        width: 500,
     },
     vstyle: {
+        alignItems: 'center',
         backgroundColor: colors.blue,
         display: 'flex',
-        flexDirection: 'row'
+        justifyContent: 'center',
     },
 });
 
