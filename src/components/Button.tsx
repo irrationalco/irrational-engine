@@ -18,7 +18,6 @@ const Button: React.SFC<IButtonProps> = (props) => {
 
 const defaultStyles = StyleSheet.create({
     button: {
-        alignSelf: 'center',
         backgroundColor: colors.blue,
         borderRadius: 15,
         paddingHorizontal: 20,
