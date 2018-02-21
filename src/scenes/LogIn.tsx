@@ -14,10 +14,10 @@ import Logo from '../components/Logo';
 import { colors } from '../Styles';
 
 
-export default class SignIn extends Component {
+export default class LogIn extends Component {
 
   static navigationOptions = {
-    title: 'SignIn',
+    title: 'LogIn',
   };
 
   goToSignIn() {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   divisor: {
-    borderTopColor: colors.black,
+    borderTopColor: colors.gray,
     borderTopWidth: 1
   },
   link: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   loginForm: {
-    borderColor: colors.black,
+    borderColor: colors.gray,
     borderRadius: 11,
     borderWidth: 2,
     marginHorizontal: 20,
