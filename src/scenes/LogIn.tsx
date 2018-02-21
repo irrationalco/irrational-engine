@@ -34,8 +34,8 @@ export default class LogIn extends Component {
         <Logo style={styles.logo} />
         <View style={styles.otherContent}>
           <View style={styles.loginForm}>
-            <TextInput placeholderTextColor={colors.black} placeholder='Email' style={styles.texts} />
-            <TextInput placeholderTextColor={colors.black} placeholder='Contraseña' style={[styles.texts, styles.divisor]} />
+            <TextInput placeholderTextColor={colors.darkGray} placeholder='Email' style={styles.texts} />
+            <TextInput placeholderTextColor={colors.darkGray} placeholder='Contraseña' style={[styles.texts, styles.divisor]} />
           </View>
           <View style={styles.bottomHalf}>
             <Button onClick={this.login}>Iniciar Sesión</Button>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   divisor: {
-    borderTopColor: colors.gray,
+    borderTopColor: colors.darkerGray,
     borderTopWidth: 1
   },
   link: {
@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   loginForm: {
-    borderColor: colors.gray,
+    borderColor: colors.darkerGray,
     borderRadius: 11,
-    borderWidth: 2,
+    borderWidth: 1,
     marginHorizontal: 20,
   },
   logo: {
