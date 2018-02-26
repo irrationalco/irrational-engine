@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
+    ImageBackground,
     StyleSheet,
     View,
-    ImageBackground,
-} from 'react-native'
+} from 'react-native';
 
 //   import  {StackNavigator} from 'react-navigation'
 
-import TemplateTitle from '../components/TemplateTitle'
-import TemplateSubtitle from '../components/TemplateSubtitle'
-import FollowerForm from '../components/FollowerForm'
-import NextStrip from '../components/NextStrip'
+import FollowerForm from '../components/FollowerForm';
+import NextStrip from '../components/NextStrip';
+import TemplateSubtitle from '../components/TemplateSubtitle';
+import TemplateTitle from '../components/TemplateTitle';
 
 export default class AddFollower extends Component {
 
@@ -27,9 +27,10 @@ export default class AddFollower extends Component {
         const { container } = styles;
         // const { navigate } = this.props.navigation;
         return (
+            // tslint:disable-next-line
             <ImageBackground source={require('../../img/backG.png')} style={container}>
-                <TemplateTitle name="SEGUIDORES" />
-                <TemplateSubtitle name="INGRESAR SEGUIDORES" />
+                <TemplateTitle name='SEGUIDORES' />
+                <TemplateSubtitle name='INGRESAR SEGUIDORES' />
                 <View style={{ alignItems: 'center' }}>
                     {/* <View style={{height:2,width:300, backgroundColor:'rgba(39,43,62,0.8)'}}></View> */}
                     <View style={{ height: 1, width: 340, backgroundColor: 'white', opacity: 0.8 }}></View>

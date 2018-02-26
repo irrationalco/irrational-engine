@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
-  Text,
   ImageBackground,
+  Text,
 } from 'react-native';
 
 // import { StackNavigator } from 'react-navigation'
@@ -10,6 +10,7 @@ export default class SurveyOptions extends Component {
   render() {
     const { container } = styles;
     return (
+      // tslint:disable-next-line
       <ImageBackground source={require('../../img/backG.png')} style={container}>
         <Text>Hey</Text>
       </ImageBackground>
@@ -20,7 +21,7 @@ export default class SurveyOptions extends Component {
 const styles = {
   container: {
     flex: 1,
-    width: null,
     height: null,
+    width: null,
   },
 };

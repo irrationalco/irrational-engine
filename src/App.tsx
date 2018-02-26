@@ -1,11 +1,11 @@
 import { AppRegistry } from 'react-native';
 
 import React from 'react';
-import Signin from './scenes/SignIn'
+import LogIn from './scenes/LogIn';
 
 export default class App extends React.Component<{}, {}> {
   render() {
-    return <Signin />;
+    return <LogIn />;
   }
 }
 

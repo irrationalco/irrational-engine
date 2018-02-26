@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, ViewStyle, TextStyle, StyleSheet } from 'react-native';
+import { StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import { colors } from '../Styles';
 
 interface IButtonProps {
@@ -18,7 +18,6 @@ const Button: React.SFC<IButtonProps> = (props) => {
 
 const defaultStyles = StyleSheet.create({
     button: {
-        alignSelf: 'center',
         backgroundColor: colors.blue,
         borderRadius: 15,
         paddingHorizontal: 20,
@@ -28,6 +27,6 @@ const defaultStyles = StyleSheet.create({
         color: colors.black,
         fontSize: 15
     }
-})
+});
 
 export default Button;
