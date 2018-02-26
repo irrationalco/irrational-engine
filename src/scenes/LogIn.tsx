@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {
+  KeyboardAvoidingView,
   Linking,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -20,6 +22,8 @@ export default class LogIn extends Component {
     title: 'LogIn',
   };
 
+  static bp = Platform.OS === 'ios' ? { behavior: 'padding' as 'padding' } : {};
+
   goToSignIn() {
     Linking.openURL('http://www.google.com');
   }
@@ -30,7 +34,7 @@ export default class LogIn extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} {...LogIn.bp}>
         <Logo style={styles.logo} />
         <View style={styles.otherContent}>
           <View style={styles.loginForm}>
@@ -47,7 +51,7 @@ export default class LogIn extends Component {
             </View>
           </View >
         </View >
-      </View >
+      </KeyboardAvoidingView >
     );
   }
 }
