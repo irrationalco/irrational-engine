@@ -15,14 +15,13 @@ import Logo from '../components/Logo';
 
 import { colors } from '../Styles';
 
+const bp = Platform.OS === 'ios' ? { behavior: 'padding' as 'padding' } : {};
 
 export default class LogIn extends Component {
 
   static navigationOptions = {
     title: 'LogIn',
   };
-
-  static bp = Platform.OS === 'ios' ? { behavior: 'padding' as 'padding' } : {};
 
   goToSignIn() {
     Linking.openURL('http://www.google.com');
@@ -34,7 +33,7 @@ export default class LogIn extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} {...LogIn.bp}>
+      <KeyboardAvoidingView style={styles.container} {...bp}>
         <Logo style={styles.logo} />
         <View style={styles.otherContent}>
           <View style={styles.loginForm}>
