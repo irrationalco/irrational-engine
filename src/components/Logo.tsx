@@ -20,13 +20,11 @@ const Logo: React.SFC<ILogoProps> = (props: ILogoProps) => {
 
 export default Logo;
 
-const logoWidthPercentage = 0.78;
-
 const styles = StyleSheet.create({
     image: {
         flex: 1,
         marginVertical: 15,
-        maxWidth: Dimensions.get('screen').width * logoWidthPercentage,
+        maxWidth: Dimensions.get('screen').width * 0.78,
         resizeMode: 'contain',
     },
     vstyle: {

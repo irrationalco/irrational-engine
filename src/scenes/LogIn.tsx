@@ -15,7 +15,7 @@ import Logo from '../components/Logo';
 
 import { colors } from '../Styles';
 
-const bp = Platform.OS === 'ios' ? { behavior: 'padding' as 'padding' } : {};
+const platformBehavior = Platform.OS === 'ios' ? { behavior: 'padding' as 'padding' } : {};
 
 export default class LogIn extends Component {
 
@@ -33,7 +33,7 @@ export default class LogIn extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} {...bp}>
+      <KeyboardAvoidingView style={styles.container} {...platformBehavior}>
         <Logo style={styles.logo} />
         <View style={styles.otherContent}>
           <View style={styles.loginForm}>
@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   logo: {
-    flex: 2
+    flex: 2,
+    paddingTop: Platform.OS === 'ios' ? 20 : 0
   },
   otherContent: {
     flex: 3,
