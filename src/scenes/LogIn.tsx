@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
   KeyboardAvoidingView,
   Linking,
   Platform,
@@ -23,7 +22,6 @@ const platformBehavior = Platform.OS === 'ios' ? { behavior: 'padding' as 'paddi
 interface ILoginState {
   user: string;
   password: string;
-  isLoggedIn: boolean;
   error: ErrorStates;
   loading: boolean;
 }
@@ -45,7 +43,6 @@ export default class LogIn extends Component<{}, ILoginState> {
     super(props);
     this.state = {
       error: ErrorStates.none,
-      isLoggedIn: false,
       loading: false,
       password: '',
       user: '',
@@ -57,19 +54,14 @@ export default class LogIn extends Component<{}, ILoginState> {
   }
   // tslint:disable-next-line:space-before-function-paren
   login = async () => {
+    this.setState({ loading: true });
     try {
-      this.setState({ loading: true });
       const success = await tryLogin(this.state.user, this.state.password);
-      if (success) {
-        this.setState({ isLoggedIn: true, error: ErrorStates.none });
-      } else {
-        this.setState({ error: ErrorStates.invalidCredentials });
-      }
+      this.setState({ error: success ? ErrorStates.none : ErrorStates.invalidCredentials });
     } catch (e) {
       this.setState({ error: ErrorStates.genericError });
-    } finally {
-      this.setState({ loading: false });
     }
+    this.setState({ loading: false });
   }
 
   handleUserChange = (value: string) => {
@@ -91,11 +83,21 @@ export default class LogIn extends Component<{}, ILoginState> {
         <View style={styles.otherContent}>
           <View style={styles.loginForm}>
             <TextInput placeholderTextColor={colors.darkGray} placeholder='Email' style={styles.texts}
-              onChangeText={this.handleUserChange} />
+              onChangeText={this.handleUserChange}
+              returnKeyType='go'
+              keyboardType='email-address'
+              autoCapitalize='none'
+              enablesReturnKeyAutomatically={true}
+              onSubmitEditing={this.login} />
             <TextInput placeholderTextColor={colors.darkGray} placeholder='Contraseña' style={[styles.texts, styles.divisor]}
-              onChangeText={this.handlePasswordChange} />
+              onChangeText={this.handlePasswordChange}
+              secureTextEntry={true}
+              returnKeyType='go'
+              autoCapitalize='none'
+              clearTextOnFocus={true}
+              enablesReturnKeyAutomatically={true}
+              onSubmitEditing={this.login} />
           </View>
-
           {this.state.error !== ErrorStates.none &&
             <View style={styles.errorContainer}>
               <Text style={styles.errorText}>{ErrorMessages.get(this.state.error)}</Text>
@@ -110,7 +112,10 @@ export default class LogIn extends Component<{}, ILoginState> {
             </View>
           </View >
         </View >
-        <ActivityIndicator size='large' color={colors.purple} animating={this.state.loading} />
+        {this.state.loading &&
+          <View style={styles.activityIndicator}>
+            <ActivityIndicator size='large' color={colors.purple} animating={true} />
+          </View>}
       </KeyboardAvoidingView >
     );
   }
@@ -119,9 +124,14 @@ export default class LogIn extends Component<{}, ILoginState> {
 
 const styles = StyleSheet.create({
   activityIndicator: {
-    left: Dimensions.get('screen').width / 2 - 20,
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF88',
+    bottom: 0,
+    justifyContent: 'center',
+    left: 0,
     position: 'absolute',
-    top: Dimensions.get('screen').height * 3 / 2,
+    right: 0,
+    top: 0,
   },
   bottomHalf: {
     alignItems: 'center',
@@ -161,7 +171,7 @@ const styles = StyleSheet.create({
   },
   otherContent: {
     flex: 3,
-    marginTop: 30
+    marginTop: 25
   },
   texts: {
     color: colors.black,
