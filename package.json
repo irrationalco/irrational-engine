@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "tsc -w",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios"
+    "android": "ENVFILE=.env.android react-native run-android",
+    "ios": "ENVFILE=.env.ios react-native run-ios"
   },
   "dependencies": {
     "react": "16.2.0",
-    "react-native": "0.53.0"
+    "react-native": "0.53.0",
+    "react-native-config": "^0.11.5"
   },
   "devDependencies": {
     "@types/react": "^16.0.38",
