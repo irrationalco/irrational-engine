@@ -94,7 +94,6 @@ export default class LogIn extends Component<{}, ILoginState> {
               secureTextEntry={true}
               returnKeyType='go'
               autoCapitalize='none'
-              clearTextOnFocus={true}
               enablesReturnKeyAutomatically={true}
               onSubmitEditing={this.login} />
           </View>
