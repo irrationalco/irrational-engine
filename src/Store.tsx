@@ -75,18 +75,20 @@ export async function tryLogin(username: string, password: string): Promise<bool
 }
 
 export async function logOut() {
-    throw Error('Not implemented');
-    // try {
-    //     const res = await fetch(`${Config.API_URL}/sessions`, {
-    //         headers: {
-    //             // TODO: add the correct header and value to make an authenticated call
-    //         },
-    //         method: 'DELETE',
-    //     });
-    //     await AsyncStorage.removeItem('user');
-    // } catch (e) {
-    //     throw Error("Couldn't log out");
-    // }
+    try {
+        const res = await fetch(`${Config.API_URL}/sessions`, {
+            headers: {
+                'Authorization': `Bearer ${(await getUser()).token}`
+            },
+            method: 'DELETE',
+        });
+        if (!res.ok) {
+            throw Error('There was a network error');
+        }
+        await AsyncStorage.removeItem('user');
+    } catch (e) {
+        throw Error("Couldn't log out");
+    }
 }
 
 export async function isLoggedIn() {
