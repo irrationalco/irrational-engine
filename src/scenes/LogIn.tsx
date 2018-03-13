@@ -56,10 +56,14 @@ export default class LogIn extends Component<{}, ILoginState> {
   login = async () => {
     this.setState({ loading: true });
     try {
-      const success = await tryLogin(this.state.user, this.state.password);
-      this.setState({ error: success ? ErrorStates.none : ErrorStates.invalidCredentials });
+      await tryLogin(this.state.user, this.state.password);
+      this.setState({ error: ErrorStates.none });
     } catch (e) {
-      this.setState({ error: ErrorStates.genericError });
+      this.setState({
+        error: e.code === 'auth/generic-error'
+          ? ErrorStates.genericError
+          : ErrorStates.invalidCredentials
+      });
     }
     this.setState({ loading: false });
   }

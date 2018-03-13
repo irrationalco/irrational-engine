@@ -1,13 +1,6 @@
+import * as firebase from 'firebase/app';
 import { AsyncStorage } from 'react-native';
-import Config from 'react-native-config';
-
-const UNAUTHORIZED = 401;
-
-class User {
-    email: string;
-    id: number;
-    token: string;
-}
+import { auth, firestore } from './fbapp';
 
 const loginChangeHooks: ((state: boolean) => void)[] = [];
 
@@ -28,7 +21,7 @@ export function registerOnLoginChange(callback: () => void) {
     loginChangeHooks.push(callback);
 }
 
-export async function getUser(): Promise<User> {
+export async function getUser(): Promise<engine.User> {
     try {
         const userJson = await AsyncStorage.getItem('user');
         return JSON.parse(userJson);
@@ -37,7 +30,7 @@ export async function getUser(): Promise<User> {
     }
 }
 
-export async function saveUser(user: User): Promise<void> {
+export async function saveUser(user: engine.User): Promise<void> {
     try {
         await AsyncStorage.setItem('user', JSON.stringify(user));
     } catch (e) {
@@ -45,47 +38,33 @@ export async function saveUser(user: User): Promise<void> {
     }
 }
 
-export async function tryLogin(username: string, password: string): Promise<boolean> {
+export async function getUserById(uid: string) {
     try {
-        const res = await fetch(`${Config.API_URL}/sessions`, {
-            body: JSON.stringify({
-                password,
-                username,
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'POST',
-        });
-        if (res.status === UNAUTHORIZED) {
-            setLoginState(false);
-            return false;
-        }
-        if (!res.ok) {
-            throw Error('There was a network error');
-        }
-        const response = await res.json();
-        const user: User = { email: response.email, id: response.id, token: response.access_token };
+        const doc = await firestore.doc(`/users/${uid}`).get();
+        return { ...doc.data(), uid } as engine.User;
+    } catch (e) {
+        throw Error(`getUserById: ${(e as Error).message}`);
+    }
+}
+
+export async function tryLogin(username: string, password: string) {
+    try {
+        const fbUser: firebase.User = await auth.signInWithEmailAndPassword(username, password);
+        const user = await getUserById(fbUser.uid);
         saveUser(user);
         setLoginState(true);
-        return true;
     } catch (e) {
-        throw Error(`Error on tryLogin: ${(e as Error).message}`);
+        const error:any = Error(`tryLogin: ${(e as Error).message}`);
+        error.code = e.code || 'auth/generic-error';
+        throw error;
     }
 }
 
 export async function logOut() {
     try {
-        const res = await fetch(`${Config.API_URL}/sessions`, {
-            headers: {
-                'Authorization': `Bearer ${(await getUser()).token}`
-            },
-            method: 'DELETE',
-        });
-        if (!res.ok) {
-            throw Error('There was a network error');
-        }
+        const logOutPromise = auth.signOut();
         await AsyncStorage.removeItem('user');
+        await logOutPromise;
     } catch (e) {
         throw Error("Couldn't log out");
     }

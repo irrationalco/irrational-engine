@@ -13,7 +13,11 @@
         "sourceMap": true,
         "noImplicitReturns": true,
         "noUnusedParameters": true,
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "typeRoots": [
+            "@types",
+            "./src/@types"
+        ]
     },
     "filesGlob": [
         "typings/index.d.ts",
