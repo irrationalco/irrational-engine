@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import React from 'react';
+import { Text, View } from 'react-native';
 
 interface ITemplateTitleProps {
     styles?: any;
@@ -16,6 +16,6 @@ const TemplateTitle: React.SFC<ITemplateTitleProps> = (props) => {
             {/* <Text>Hello</Text> */}
         </View>
     );
-}
+};
 
 export default TemplateTitle;

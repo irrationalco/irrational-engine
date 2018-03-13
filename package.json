@@ -3,11 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "dev": "tsc -w",
+    "android": "ENVFILE=.env.android react-native run-android",
+    "ios": "ENVFILE=.env.ios react-native run-ios"
   },
   "dependencies": {
+    "firebase": "^4.11.0",
     "react": "16.2.0",
-    "react-native": "0.53.0"
+    "react-native": "0.53.0",
+    "react-native-config": "^0.11.5"
   },
   "devDependencies": {
     "@types/react": "^16.0.38",

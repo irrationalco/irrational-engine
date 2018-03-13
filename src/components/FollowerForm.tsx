@@ -1,62 +1,40 @@
-import React from 'react'
-import { View, StyleSheet, TextInput } from 'react-native'
+import React from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 const FollowerForm: React.SFC = () => {
     return (
         <View style={styles.box}>
             <View style={styles.place}>
-                <TextInput placeholderTextColor='white' placeholder="Nombre" style={styles.texts} />
+                <TextInput placeholderTextColor='white' placeholder='Nombre' style={styles.texts} />
             </View>
             <View style={styles.place}>
-                <TextInput placeholderTextColor='white' placeholder="Apellido" style={styles.texts} />
+                <TextInput placeholderTextColor='white' placeholder='Apellido' style={styles.texts} />
             </View>
             <View style={styles.place}>
-                <TextInput placeholderTextColor='white' placeholder="Fecha de Nacimiento" style={styles.texts} />
+                <TextInput placeholderTextColor='white' placeholder='Fecha de Nacimiento' style={styles.texts} />
             </View>
             <View style={styles.place}>
-                <TextInput placeholderTextColor='white' placeholder="Email" style={styles.texts} />
+                <TextInput placeholderTextColor='white' placeholder='Email' style={styles.texts} />
             </View>
             <View style={styles.place}>
-                <TextInput placeholderTextColor='white' placeholder="Telefono" style={styles.texts} />
+                <TextInput placeholderTextColor='white' placeholder='Telefono' style={styles.texts} />
             </View>
             <View style={styles.place}>
-                <TextInput placeholderTextColor='white' placeholder="Telefono Celular" style={styles.texts} />
+                <TextInput placeholderTextColor='white' placeholder='Telefono Celular' style={styles.texts} />
             </View>
             <View style={styles.place}>
-                <TextInput placeholderTextColor='white' placeholder="Genero" style={styles.texts} />
+                <TextInput placeholderTextColor='white' placeholder='Genero' style={styles.texts} />
             </View>
         </View>
     );
-}
+};
 
 export default FollowerForm;
 
 const styles = StyleSheet.create({
-    place: {
-        flex: 1,
-        // justifyContent:'center',
-        // alignItems:'center',
-        // borderRadius: 4,
-        // borderWidth: 3,
-        // borderColor: '#000',
-        marginTop: 10,
-        marginHorizontal: 20,
-        backgroundColor: 'rgba(50,58,78,0.8)',
-        borderRadius: 11,
-    },
-    texts: {
-        flex: 1,
-        margin: 10,
-        color: 'white',
-        // backgroundColor: 'rgba(50,58,78,0.8)',
-        // color:'rgb(50,58,78)',
-        // placeholderTextColor:'white'
-        // borderRadius: 4,
-        // borderWidth: 3,
-        // borderColor: '#000',
-    },
     box: {
         flex: 5,
+        justifyContent: 'space-around',
         // flexGrow:1,
         // paddingHorizontal:10,
         paddingTop: 10,
@@ -65,12 +43,35 @@ const styles = StyleSheet.create({
         // borderRadius: 4,
         // borderWidth: 3,
         // borderColor: '#FFF',
-        justifyContent: 'space-around',
         // alignItems: 'center',
         // backgroundColor: 'rgba(39,43,62,0.8)',
         // paddingHorizontal:50,
         // paddingVertical:50,
     },
+    place: {
+        // justifyContent:'center',
+        // alignItems:'center',
+        // borderRadius: 4,
+        // borderWidth: 3,
+        // borderColor: '#000',
+        backgroundColor: 'rgba(50,58,78,0.8)',
+        borderRadius: 11,
+        flex: 1,
+        marginHorizontal: 20,
+        marginTop: 10,
+    },
+    texts: {
+        color: 'white',
+        flex: 1,
+        margin: 10,
+        // backgroundColor: 'rgba(50,58,78,0.8)',
+        // color:'rgb(50,58,78)',
+        // placeholderTextColor:'white'
+        // borderRadius: 4,
+        // borderWidth: 3,
+        // borderColor: '#000',
+    },
+
 });
 
 
