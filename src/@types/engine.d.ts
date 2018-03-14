@@ -40,7 +40,7 @@ declare namespace engine {
         max: number;
     }
 
-    interface Single_select extends Variation {
+    interface SingleSelect extends Variation {
         options: Option[];
     }
 
@@ -51,7 +51,7 @@ declare namespace engine {
         imageDescription: string;
     }
 
-    interface Multiple_select extends Single_select {
+    interface MultipleSelect extends SingleSelect {
 
     }
 
@@ -71,11 +71,59 @@ declare namespace engine {
 
     }
 
-    interface Comparative_sliders extends Slider {
+    interface ComparativeSliders extends Slider {
         slides: Slide[];
     }
 
     interface Slide extends Option {
 
+    }
+
+    interface SurveyAnswer {
+        surveyId: number;
+        id: number;
+        date: Date;
+        userId: number;
+        answers: QuestionAnswer[];
+        demographics: Demographics;
+    }
+
+    interface Demographics {
+        dateOfBirth: Date;
+        gender: 'M' | 'F';
+    }
+
+    interface QuestionAnswer {
+        questionId: number;
+        // type: string;
+        variationId: number;
+    }
+
+    interface OpenAnswer extends QuestionAnswer {
+        answer: string;
+    }
+
+    interface SingleSelectAnswer extends QuestionAnswer {
+        answer: number;
+    }
+
+    interface MultipleSelectAnswer extends QuestionAnswer {
+        answer: number[];
+    }
+
+    interface SliderAnswer extends QuestionAnswer {
+        answer: number;
+    }
+
+    interface StarAnswer extends QuestionAnswer {
+        answer: number;
+    }
+
+    interface LikeAnswer extends QuestionAnswer {
+        answer: boolean;
+    }
+
+    interface ComparativeSlidersAnswer extends QuestionAnswer {
+        answer: number[];
     }
 }
