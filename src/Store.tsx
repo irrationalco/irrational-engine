@@ -21,7 +21,7 @@ export function registerOnLoginChange(callback: () => void) {
     loginChangeHooks.push(callback);
 }
 
-export async function getUser(): Promise<engine.User> {
+export async function getLocalUser(): Promise<engine.User> {
     try {
         const userJson = await AsyncStorage.getItem('user');
         return JSON.parse(userJson);
@@ -30,7 +30,7 @@ export async function getUser(): Promise<engine.User> {
     }
 }
 
-export async function saveUser(user: engine.User): Promise<void> {
+export async function saveLocalUser(user: engine.User): Promise<void> {
     try {
         await AsyncStorage.setItem('user', JSON.stringify(user));
     } catch (e) {
@@ -40,7 +40,7 @@ export async function saveUser(user: engine.User): Promise<void> {
 
 export async function getUserById(uid: string) {
     try {
-        const doc = await firestore.doc(`/users/${uid}`).get();
+        const doc = await firestore.doc(`/user/${uid}`).get();
         return { ...doc.data(), uid } as engine.User;
     } catch (e) {
         throw Error(`getUserById: ${(e as Error).message}`);
@@ -51,10 +51,10 @@ export async function tryLogin(username: string, password: string) {
     try {
         const fbUser: firebase.User = await auth.signInWithEmailAndPassword(username, password);
         const user = await getUserById(fbUser.uid);
-        saveUser(user);
+        saveLocalUser(user);
         setLoginState(true);
     } catch (e) {
-        const error:any = Error(`tryLogin: ${(e as Error).message}`);
+        const error: any = Error(`tryLogin: ${(e as Error).message}`);
         error.code = e.code || 'auth/generic-error';
         throw error;
     }
@@ -75,6 +75,64 @@ export async function isLoggedIn() {
         const user = await AsyncStorage.getItem('user');
         return user !== null;
     } catch (e) {
-        throw Error("Can't check logged status");
+        throw Error("Can't check login status");
+    }
+}
+
+export async function getSurveyList() {
+    try {
+        const user = await getLocalUser();
+        // const doc = await firestore.doc(`/surveys/${user.organizationId}`).get();
+        const coll = await firestore.collection(`data/surveyLists/${user.organizationId}`).get();
+        const surveyList: engine.SurveyListing[] = coll.docs.map((doc) => {
+            return doc.data() as engine.SurveyListing;
+        });
+        return surveyList;
+    } catch (e) {
+        throw Error(`getSurveyList: ${e.message}`);
+    }
+}
+
+export async function saveLocalSurveyList(list: engine.SurveyListing[]) {
+    try {
+        await AsyncStorage.setItem('surveyList', JSON.stringify(list));
+    } catch (e) {
+        throw Error("Couldn't save survey list");
+    }
+}
+
+export async function getLocalSurveyList(): Promise<engine.SurveyListing[]> {
+    try {
+        const listJson = await AsyncStorage.getItem('surveyList');
+        return JSON.parse(listJson);
+    } catch (e) {
+        throw Error("Couldn't get survey list");
+    }
+}
+
+export async function getSurveyById(id: number) {
+    try {
+        const user = await getLocalUser();
+        const doc = await firestore.doc(`/data/surveys/${user.organizationId}/${id}`).get();
+        return doc.data() as engine.Survey;
+    } catch (e) {
+        throw Error(`getSurveyById: ${e.message}`);
+    }
+}
+
+export async function saveLocalSurvey(survey: engine.Survey) {
+    try {
+        await AsyncStorage.setItem(`survey_${survey.id}`, JSON.stringify(survey));
+    } catch (e) {
+        throw Error("Couldn't save survey");
+    }
+}
+
+export async function getLocalSurvey(id: number): Promise<engine.Survey> {
+    try {
+        const listJson = await AsyncStorage.getItem(`survey_${id}`);
+        return JSON.parse(listJson);
+    } catch (e) {
+        throw Error("Couldn't get survey");
     }
 }
