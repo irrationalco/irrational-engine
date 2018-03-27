@@ -9,16 +9,20 @@ let loginState: boolean = null;
 async function setLoginState(state: boolean = null) {
     const newLoginState = state === null ? await isLoggedIn() : state;
     if (newLoginState !== loginState) {
+        loginState = newLoginState;
         loginChangeHooks.forEach((k) => {
             k(newLoginState);
         });
     }
-    loginState = newLoginState;
 }
 setLoginState();
 
-export function registerOnLoginChange(callback: () => void) {
+export function registerOnLoginChange(callback: (state: boolean) => void) {
     loginChangeHooks.push(callback);
+}
+
+export function unregisterOnLoginChange(callback: (state: boolean) => void) {
+    loginChangeHooks.splice(loginChangeHooks.indexOf(callback), 1);
 }
 
 export async function getLocalUser(): Promise<engine.User> {
@@ -56,6 +60,7 @@ export async function tryLogin(username: string, password: string) {
     } catch (e) {
         const error: any = Error(`tryLogin: ${(e as Error).message}`);
         error.code = e.code || 'auth/generic-error';
+        setLoginState(false);
         throw error;
     }
 }
