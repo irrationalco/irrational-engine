@@ -1,10 +1,10 @@
 import { AppRegistry } from 'react-native';
 
 import React from 'react';
-<<<<<<< HEAD
 import { StackNavigator } from 'react-navigation';
 
 import LogIn from './scenes/LogIn';
+import SurveyList from './scenes/SurveyList';
 import { isLoggedIn, registerOnLoginChange } from './Store';
 
 interface IAppState {
