@@ -1,6 +1,7 @@
 import { AppRegistry } from 'react-native';
 
 import React from 'react';
+<<<<<<< HEAD
 import { StackNavigator } from 'react-navigation';
 
 import LogIn from './scenes/LogIn';
@@ -37,6 +38,8 @@ export default class App extends React.Component<{}, IAppState> {
       return <AppNavigator />;
     }
     return <LogIn />;
+    // return <LogIn />;
+    // return <SurveyList />;
   }
 }
 
