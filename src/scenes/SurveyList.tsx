@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import {
-  ActivityIndicator,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View
+    ActivityIndicator,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View
 } from 'react-native';
 
 import {
     getLocalSurveyList,
     getSurveyList,
+    saveLocalSurveyList,
 } from '../Store';
 
-import Logo from '../components/Logo';
 import SurveyCard from '../components/SurveyCard';
 import { colors } from '../Styles';
 
@@ -32,14 +32,16 @@ enum ErrorStates {
 }
 
 const ErrorMessages = new Map([
-    [ErrorStates.genericError, 'Ha ocurrido un error aor favor vuelva a intentar más tarde']
+    [ErrorStates.genericError, 'Ha ocurrido un error por favor vuelva a intentar más tarde']
 ]);
 
 export default class SurveyList extends Component<{}, ISurveyListState> {
 
     static navigationOptions = {
-        title: 'SurveyList',
+        title: 'Encuestas',
     };
+
+    localList: engine.SurveyListing[];
 
     constructor(props: any) {
         super(props);
@@ -47,81 +49,100 @@ export default class SurveyList extends Component<{}, ISurveyListState> {
             error: ErrorStates.none,
             loading: false,
             refreshing: false,
-            surveys:[],
+            surveys: [],
         };
     }
 
-    _onRefresh() {
-        this.setState({refreshing: true});
-        this.renderSurv().then(() => {
-          this.setState({refreshing: false});
-        // tslint:disable-next-line:no-console
-        }).catch((e) => console.error(e));
+    // tslint:disable-next-line:space-before-function-paren
+    refresh = async () => {
+        this.setState({ refreshing: true });
+        try {
+            await this.renderSurv();
+        } catch (e) {
+            throw Error(`_onRefresh: ${e.message}`);
+        }
+        this.setState({ refreshing: false });
     }
 
 
     async renderSurv() {
-        try{
-            this.setState({loading: true});
+        try {
+            this.setState({ loading: true });
 
-            // tslint:disable-next-line:no-console
             const promise = getSurveyList();
 
-            // tslint:disable-next-line:no-console
-            const localList = (await getLocalSurveyList()) || [];
+            this.localList = (await getLocalSurveyList()) || [];
 
-            const internetList = await promise as engine.SurveyListing[];
+            const internetList = await promise;
 
-            const map = new Object();
             const renderSurvey = [];
-
-            for (const survey of localList) {
-                map[survey.id] = survey.lastUpdate;
-            }
-
+            const map = new Map(this.localList.map((item): [number, number] => [item.id, item.lastUpdate.getTime()]));
             for (const survey of internetList) {
-                if(survey.lastUpdate !== map[survey.id]){
-                    survey.status = map[survey.id] === undefined ? engine.SurveyStatus.notDownloaded : engine.SurveyStatus.updateNeeded;
-                }else{
+                // tslint:disable-next-line:prefer-conditional-expression
+                if (survey.lastUpdate.getTime() === map.get(survey.id)) {
                     survey.status = engine.SurveyStatus.upToDate;
+                } else {
+                    survey.status = map[survey.id] === undefined ? engine.SurveyStatus.notDownloaded : engine.SurveyStatus.updateNeeded;
                 }
                 renderSurvey.push(survey);
             }
 
-            this.setState({surveys: renderSurvey});
+            this.setState({ surveys: renderSurvey });
 
-            this.setState({loading: false});
-        }catch{
-            // tslint:disable-next-line:no-console
-            (e) => console.warn(e);
+            this.setState({ loading: false });
+        } catch (e) {
+            throw Error(`renderSurv: ${e.message}`);
         }
     }
 
-    async componentWillMount(){
+    componentWillMount() {
         this.renderSurv();
     }
 
-    render(){
-        return(
-            <View style={styles.container}>
-                <Logo style={styles.logo} />
-                <ScrollView
-                    refreshControl={
+    // tslint:disable-next-line:space-before-function-paren
+    onItemUpdate = async (id: number) => {
+        try {
+            const idx = this.localList.findIndex((item) => item.id === id);
+            const nIdx = this.state.surveys.findIndex((item) => item.id === id);
+            if (idx === -1) {
+                this.localList.push(this.state.surveys[nIdx]);
+            } else {
+                this.localList[idx] = this.state.surveys[nIdx];
+            }
+            await saveLocalSurveyList(this.localList);
+        } catch (e) {
+            throw Error(`onItemUpdate: ${e.message}`);
+        }
+    }
+
+    render() {
+        let content: JSX.Element;
+        if (this.state.surveys.length > 0) {
+            content = <ScrollView
+                refreshControl={
                     <RefreshControl
                         refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh.bind(this)}
+                        onRefresh={this.refresh}
                     />
-                    } style={styles.otherContent}
-                >
-                    <View style={styles.cards}>
-                        {this.state.surveys.map((survey) => <SurveyCard key={survey.id} {...survey} />)}
-                    </View>
-                </ScrollView>
+                }
+            >
+                <View style={styles.cards}>
+                    {this.state.surveys.map((survey) => <SurveyCard key={survey.id} data={survey} onStatusUpdate={this.onItemUpdate} />)}
+                </View>
+            </ScrollView>;
+        } else {
+            content = <View style={styles.empty}>
+                <Text>No tienes encuestas</Text>
+            </View>;
+        }
+        return (
+            <View style={styles.container}>
+                {content}
                 {this.state.loading &&
                     <View style={styles.activityIndicator}>
                         <ActivityIndicator size='large' color={colors.purple} animating={true} />
                     </View>}
-            </View>
+            </View >
         );
     }
 }
@@ -136,21 +157,18 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: 0,
-      },
-    cards:{
-        flex:1,
-        // justifyContent: 'space-between',
     },
-    container:{
-        flex:1,
-    },
-    logo: {
+    cards: {
         flex: 1,
-        paddingTop: Platform.OS === 'ios' ? 20 : 0
     },
-    otherContent: {
-        flex: 3,
-        marginTop: 25
+    container: {
+        flex: 1,
+        paddingVertical: 10
     },
+    empty: {
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center'
+    }
 });
 

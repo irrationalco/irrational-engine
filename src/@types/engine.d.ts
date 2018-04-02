@@ -14,7 +14,6 @@ declare namespace engine {
         id: number;
         lastUpdate: Date;
         numberOfQuestions: number;
-        sizeEstimate: number;
         name: string;
         status?: SurveyStatus;
         // logo: image;

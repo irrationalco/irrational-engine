@@ -11,7 +11,8 @@
     "firebase": "^4.11.0",
     "react": "16.2.0",
     "react-native": "0.53.0",
-    "react-native-config": "^0.11.5"
+    "react-native-config": "^0.11.5",
+    "react-native-fontawesome": "^5.7.0"
   },
   "devDependencies": {
     "@types/react": "^16.0.38",

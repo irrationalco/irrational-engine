@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import {
+    ActivityIndicator,
     Image,
     StyleSheet,
     Text,
     View
 } from 'react-native';
+
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 import {
     getLocalSurvey,
@@ -17,8 +20,14 @@ import Button from './Button';
 import { colors } from '../Styles';
 
 interface ISurveyCardState {
+    data: engine.SurveyListing;
     downloading: boolean;
     error: ErrorStates;
+}
+
+interface ISurveyCardProps {
+    data: engine.SurveyListing;
+    onStatusUpdate: (id: number) => void;
 }
 
 enum ErrorStates {
@@ -26,91 +35,83 @@ enum ErrorStates {
     genericError
 }
 
-export default class SurveyCard extends Component<engine.SurveyListing, ISurveyCardState> {
+export default class SurveyCard extends Component<ISurveyCardProps, ISurveyCardState> {
 
-    constructor(props: any){
+    constructor(props: ISurveyCardProps) {
         super(props);
         this.state = {
+            data: props.data,
             downloading: false,
-            error: ErrorStates.none,
+            error: ErrorStates.none
         };
     }
 
-    updateSurvey = async() => {
-        this.setState({downloading: true});
-        try{
-            // tslint:disable-next-line:no-console
-            console.warn('first');
-            const promise = getSurveyById(this.props.id);
-            const newSurvey = await promise;
-            // saveLocalSurvey(newSurvey);
-        } catch (e) {
-            this.setState({error: ErrorStates.genericError});
-            // tslint:disable-next-line:no-console
-            console.warn('second');
-        }
-        this.setState({ downloading: false});
-
-    }
-
-    downloadSurvey = async() => {
-        this.setState({downloading: true});
-        try{
-            const newSurvey = await getSurveyById(this.props.id);
+    // tslint:disable-next-line:space-before-function-paren
+    downloadSurvey = async () => {
+        this.setState({ downloading: true });
+        try {
+            const newSurvey = await getSurveyById(this.state.data.id);
             await saveLocalSurvey(newSurvey);
+            this.setState({ data: { ...this.state.data, status: engine.SurveyStatus.upToDate } });
+            this.props.onStatusUpdate(newSurvey.id);
         } catch (e) {
-            this.setState({error: ErrorStates.genericError});
-            // tslint:disable-next-line:no-console
-            console.warn(e);
+            this.setState({ error: ErrorStates.genericError });
         }
-        // const test = await getLocalSurvey(4).catch((e) => console.error(e));
-        // console.warn("Test");
-        // console.warn(JSON.stringify(test));
-
-        // NEED TO SAVE LOCALSURVEYLIST TOO
-        this.setState({ downloading: false});
+        this.setState({ downloading: false });
     }
 
     render() {
+        let status: JSX.Element;
+        if (this.state.downloading) {
+            status = <ActivityIndicator size='large' color={colors.purple} animating={true} />;
+        } else {
+            switch (this.state.data.status) {
+                case engine.SurveyStatus.upToDate:
+                    status = <FontAwesome style={styles.check}>{Icons.check}</FontAwesome>;
+                    break;
+                case engine.SurveyStatus.updateNeeded:
+                    status = <Button onClick={this.downloadSurvey}>Actualizar</Button>;
+                    break;
+                case engine.SurveyStatus.notDownloaded:
+                    status = <Button onClick={this.downloadSurvey}>Descargar</Button>;
+                    break;
+            }
+        }
         return (
             <View style={styles.cardStyle}>
                 <View style={styles.leftSide}>
-                    <Text>id: {this.props.id}</Text>
-                    <Text>lastUpdate: {this.props.lastUpdate.toDateString()}</Text>
-                    <Text>name: {this.props.name}</Text>
-                    <Text>numberOfQuestions: {this.props.numberOfQuestions}</Text>
-                    <Text>sizeEstimate: {this.props.sizeEstimate}</Text>
-                    <Text>status: {this.props.status}</Text>
+                    <Text style={styles.title}>{this.state.data.name}</Text>
+                    <Text>Preguntas: {this.state.data.numberOfQuestions}</Text>
                 </View>
                 <View style={styles.rightSide}>
-                    {this.props.status === engine.SurveyStatus.notDownloaded &&
-                        <Button onClick={this.downloadSurvey}>Descargar</Button>}
-                    {this.props.status === engine.SurveyStatus.updateNeeded &&
-                        <Button onClick={this.updateSurvey}>Actualizar</Button>}
-                    {this.props.status === engine.SurveyStatus.upToDate &&
-                        // tslint:disable-next-line:no-require-imports
-                        < Image style={styles.check} source={require('../../img/downloaded.png')}/>}
+                    {status}
                 </View>
-            </View>
+            </View >
         );
     }
 }
 
 const styles = StyleSheet.create({
     cardStyle: {
-        borderColor: colors.darkerGray,
-        borderRadius: 11,
-        borderWidth: 1,
+        backgroundColor: colors.white,
         flexDirection: 'row',
-        justifyContent: 'center',
-        // flexDirection: 'row',
-        // justifyContent: 'flex-end',
+        margin: 7,
+        padding: 10,
+
+
+        elevation: 2,
+
+        shadowColor: '#000',
+        shadowOffset: {
+            height: 3,
+            width: 0,
+        },
+        shadowOpacity: 0.16,
+        shadowRadius: 2,
     },
     check: {
-        flex: 1,
-        height: 50,
-        resizeMode: 'contain',
-        width: 50,
+        color: colors.purple,
+        fontSize: 28
     },
     leftSide: {
         flex: 2,
@@ -119,6 +120,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         justifyContent: 'center',
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
 
