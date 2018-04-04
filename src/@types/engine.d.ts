@@ -4,12 +4,18 @@ declare namespace engine {
         organizationId: number;
     }
 
+    const enum SurveyStatus {
+        notDownloaded,
+        updateNeeded,
+        upToDate,
+    }
+
     interface SurveyListing {
         id: number;
         lastUpdate: Date;
         numberOfQuestions: number;
-        sizeEstimate: number;
         name: string;
+        status?: SurveyStatus;
         // logo: image;
     }
 

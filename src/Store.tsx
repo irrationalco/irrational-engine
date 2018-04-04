@@ -30,7 +30,7 @@ export async function getLocalUser(): Promise<engine.User> {
         const userJson = await AsyncStorage.getItem('user');
         return JSON.parse(userJson);
     } catch (e) {
-        throw Error("Couldn't get user");
+        throw Error(`Couldn't get user ${e.message}`);
     }
 }
 
@@ -38,7 +38,7 @@ export async function saveLocalUser(user: engine.User): Promise<void> {
     try {
         await AsyncStorage.setItem('user', JSON.stringify(user));
     } catch (e) {
-        throw Error("Couldn't save user");
+        throw Error(`Couldn't save user ${e.message}`);
     }
 }
 
@@ -71,7 +71,7 @@ export async function logOut() {
         await AsyncStorage.removeItem('user');
         await logOutPromise;
     } catch (e) {
-        throw Error("Couldn't log out");
+        throw Error(`Couldn't log out ${e.message}`);
     }
 }
 
@@ -80,14 +80,13 @@ export async function isLoggedIn() {
         const user = await AsyncStorage.getItem('user');
         return user !== null;
     } catch (e) {
-        throw Error("Can't check login status");
+        throw Error(`Can't check login status ${e.message}`);
     }
 }
 
 export async function getSurveyList() {
     try {
         const user = await getLocalUser();
-        // const doc = await firestore.doc(`/surveys/${user.organizationId}`).get();
         const coll = await firestore.collection(`data/surveyLists/${user.organizationId}`).get();
         const surveyList: engine.SurveyListing[] = coll.docs.map((doc) => {
             return doc.data() as engine.SurveyListing;
@@ -102,23 +101,28 @@ export async function saveLocalSurveyList(list: engine.SurveyListing[]) {
     try {
         await AsyncStorage.setItem('surveyList', JSON.stringify(list));
     } catch (e) {
-        throw Error("Couldn't save survey list");
+        throw Error(`Couldn't save survey list ${e.message}`);
     }
 }
 
 export async function getLocalSurveyList(): Promise<engine.SurveyListing[]> {
     try {
         const listJson = await AsyncStorage.getItem('surveyList');
-        return JSON.parse(listJson);
+        return JSON.parse(listJson, (k: any, v: any) => {
+            if (k === 'lastUpdate') {
+                return new Date(v);
+            }
+            return v;
+        });
     } catch (e) {
-        throw Error("Couldn't get survey list");
+        throw Error(`Couldn't get survey list ${e.message}`);
     }
 }
 
 export async function getSurveyById(id: number) {
     try {
         const user = await getLocalUser();
-        const doc = await firestore.doc(`/data/surveys/${user.organizationId}/${id}`).get();
+        const doc = await firestore.doc(`data/surveys/${user.organizationId}/${id}`).get();
         return doc.data() as engine.Survey;
     } catch (e) {
         throw Error(`getSurveyById: ${e.message}`);
@@ -129,7 +133,7 @@ export async function saveLocalSurvey(survey: engine.Survey) {
     try {
         await AsyncStorage.setItem(`survey_${survey.id}`, JSON.stringify(survey));
     } catch (e) {
-        throw Error("Couldn't save survey");
+        throw Error(`Couldn't save survey ${e.message}`);
     }
 }
 
@@ -138,6 +142,6 @@ export async function getLocalSurvey(id: number): Promise<engine.Survey> {
         const listJson = await AsyncStorage.getItem(`survey_${id}`);
         return JSON.parse(listJson);
     } catch (e) {
-        throw Error("Couldn't get survey");
+        throw Error(`Couldn't get survey ${e.message}`);
     }
 }

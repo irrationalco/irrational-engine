@@ -4,7 +4,9 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
 import LogIn from './scenes/LogIn';
+import SurveyList from './scenes/SurveyList';
 import { isLoggedIn, registerOnLoginChange } from './Store';
+import { colors } from './Styles';
 
 interface IAppState {
   isLoggedIn: boolean;
@@ -42,10 +44,13 @@ export default class App extends React.Component<{}, IAppState> {
 
 const AppNavigator = StackNavigator({
   SurveyList: {
-    screen: null // TODO: change this to a screen or nothing will work
+    screen: SurveyList
   }
 }, {
-    headerMode: 'none',
+    cardStyle: {
+      backgroundColor: colors.white
+    },
+    // headerMode: 'none',
     initialRouteName: 'SurveyList',
   });
 
