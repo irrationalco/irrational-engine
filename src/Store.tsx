@@ -122,8 +122,26 @@ export async function getLocalSurveyList(): Promise<engine.SurveyListing[]> {
 export async function getSurveyById(id: number) {
     try {
         const user = await getLocalUser();
-        const doc = await firestore.doc(`data/surveys/${user.organizationId}/${id}`).get();
-        return doc.data() as engine.Survey;
+        let route = `data/surveys/${user.organizationId}/${id}`;
+
+        const survPromise = firestore.doc(route).get();
+        route = `${route}/questions`;
+        const questionsPromise = firestore.collection(route).get();
+
+        const survey = (await survPromise).data() as engine.Survey;
+        const variationsPromises: Promise<firebase.firestore.QuerySnapshot>[] = [];
+        survey.questions = (await questionsPromise).docs.map((doc) => {
+            variationsPromises.push(firestore.collection(`${route}/${doc.id}/variations`).get());
+            return doc.data() as engine.Question;
+        });
+
+        for (let index = 0; index < survey.questions.length; index++) {
+            survey.questions[index].variations = (await variationsPromises[index]).docs.map((doc) => {
+                return doc.data() as engine.Variation;
+            });
+        }
+
+        return survey;
     } catch (e) {
         throw Error(`getSurveyById: ${e.message}`);
     }
