@@ -82,7 +82,7 @@ export default class SurveyList extends Component<{}, ISurveyListState> {
                 if (survey.lastUpdate.getTime() === map.get(survey.id)) {
                     survey.status = engine.SurveyStatus.upToDate;
                 } else {
-                    survey.status = map[survey.id] === undefined ? engine.SurveyStatus.notDownloaded : engine.SurveyStatus.updateNeeded;
+                    survey.status = map.get(survey.id) === undefined ? engine.SurveyStatus.notDownloaded : engine.SurveyStatus.updateNeeded;
                 }
                 renderSurvey.push(survey);
             }
