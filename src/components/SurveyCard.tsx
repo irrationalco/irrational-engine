@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
 
         shadowColor: '#000',
         shadowOffset: {
-            height: 3,
-            width: 0,
+            height: 2,
+            width: 1,
         },
-        shadowOpacity: 0.16,
-        shadowRadius: 2,
+        shadowOpacity: 0.32,
+        shadowRadius: 4,
     },
     check: {
         color: colors.purple,
