@@ -17,8 +17,6 @@ import {
 import SurveyCard from '../components/SurveyCard';
 import { colors } from '../Styles';
 
-// const platformBehavior = Platform.OS === 'ios' ? { behavior: 'padding' as 'padding' } : {};
-
 interface ISurveyListState {
     surveys: engine.SurveyListing[];
     error: ErrorStates;

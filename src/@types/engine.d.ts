@@ -29,25 +29,35 @@ declare namespace engine {
         necesaryQuestions?: Question[];
     }
 
+    const enum QuestionType {
+        open,
+        singleSelect,
+        multipleSelect,
+        slider,
+        stars,
+        like,
+        comparativeSliders
+    }
+
     interface Question {
         id: number;
-        type: string; //for now
+        type: QuestionType;
         variations: Variation[];
     }
 
     interface Variation {
-        title: string;
-        image: string; //for now
-        imageDescription: string;
+        title?: string;
+        image?: string; //for now
+        imageDescription?: string;
     }
 
     interface Open extends Variation {
-        min: number;
-        max: number;
+        min?: number;
+        max?: number;
     }
 
     interface SingleSelect extends Variation {
-        options: Option[];
+        options?: Option[];
     }
 
     interface Option {
@@ -62,10 +72,10 @@ declare namespace engine {
     }
 
     interface Slider extends Variation {
-        min: number;
-        max: number;
-        start: number;
-        step: number;
+        min?: number;
+        max?: number;
+        start?: number;
+        step?: number;
         // decorators: decorator[];
     }
 
@@ -78,7 +88,7 @@ declare namespace engine {
     }
 
     interface ComparativeSliders extends Slider {
-        slides: Slide[];
+        slides?: Slide[];
     }
 
     interface Slide extends Option {
@@ -101,35 +111,8 @@ declare namespace engine {
 
     interface QuestionAnswer {
         questionId: number;
-        // type: string;
-        variationId: number;
-    }
-
-    interface OpenAnswer extends QuestionAnswer {
-        answer: string;
-    }
-
-    interface SingleSelectAnswer extends QuestionAnswer {
-        answer: number;
-    }
-
-    interface MultipleSelectAnswer extends QuestionAnswer {
-        answer: number[];
-    }
-
-    interface SliderAnswer extends QuestionAnswer {
-        answer: number;
-    }
-
-    interface StarAnswer extends QuestionAnswer {
-        answer: number;
-    }
-
-    interface LikeAnswer extends QuestionAnswer {
-        answer: boolean;
-    }
-
-    interface ComparativeSlidersAnswer extends QuestionAnswer {
-        answer: number[];
+        type: QuestionType;
+        variation: number;
+        answer?: any;
     }
 }
