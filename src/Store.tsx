@@ -145,3 +145,35 @@ export async function getLocalSurvey(id: number): Promise<engine.Survey> {
         throw Error(`Couldn't get survey ${e.message}`);
     }
 }
+
+const questionAnsweredHooks: ((index: number, answered: boolean) => void)[] = [];
+
+export function onQuestionAnswered(index: number, answered: boolean) {
+    questionAnsweredHooks.forEach((k) => {
+        k(index, answered);
+    });
+}
+
+export function registerOnQuestionAnswered(callback: (index: number, answered: boolean) => void) {
+    questionAnsweredHooks.push(callback);
+}
+
+export function unregisterOnQuestionAnswered(callback: (index: number, answered: boolean) => void) {
+    questionAnsweredHooks.splice(questionAnsweredHooks.indexOf(callback), 1);
+}
+
+const surveyIndexChangedHooks: ((index: number) => void)[] = [];
+
+export function onSurveyIndexChanged(index: number) {
+    surveyIndexChangedHooks.forEach((k) => {
+        k(index);
+    });
+}
+
+export function registerOnSurveyIndexChanged(callback: (index: number) => void) {
+    surveyIndexChangedHooks.push(callback);
+}
+
+export function unregisterOnSurveyIndexChanged(callback: (index: number) => void) {
+    surveyIndexChangedHooks.splice(surveyIndexChangedHooks.indexOf(callback), 1);
+}
