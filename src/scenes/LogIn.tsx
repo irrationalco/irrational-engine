@@ -57,15 +57,15 @@ export default class LogIn extends Component<{}, ILoginState> {
     this.setState({ loading: true });
     try {
       await tryLogin(this.state.user, this.state.password);
-      this.setState({ error: ErrorStates.none });
+      // if try login succeds it automatically changes screen i.e. we don't need to do anything
     } catch (e) {
       this.setState({
         error: e.code === 'auth/generic-error'
           ? ErrorStates.genericError
           : ErrorStates.invalidCredentials
       });
+      this.setState({ loading: false });
     }
-    this.setState({ loading: false });
   }
 
   handleUserChange = (value: string) => {

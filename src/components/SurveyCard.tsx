@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import {
     ActivityIndicator,
-    Image,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View
 } from 'react-native';
 
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 import {
-    getLocalSurvey,
     getSurveyById,
     saveLocalSurvey,
 } from '../Store';
-
-import Button from './Button';
 
 import { colors } from '../Styles';
 
@@ -67,13 +64,19 @@ export default class SurveyCard extends Component<ISurveyCardProps, ISurveyCardS
         } else {
             switch (this.state.data.status) {
                 case engine.SurveyStatus.upToDate:
-                    status = <FontAwesome style={styles.check}>{Icons.check}</FontAwesome>;
+                    status = <TouchableOpacity>
+                        <FontAwesome style={styles.button}>{Icons.check}</FontAwesome>
+                    </TouchableOpacity>;
                     break;
                 case engine.SurveyStatus.updateNeeded:
-                    status = <Button onClick={this.downloadSurvey}>Actualizar</Button>;
+                    status = <TouchableOpacity onPress={this.downloadSurvey}>
+                        <FontAwesome style={styles.button}>{Icons.refresh}</FontAwesome>
+                    </TouchableOpacity>;
                     break;
                 case engine.SurveyStatus.notDownloaded:
-                    status = <Button onClick={this.downloadSurvey}>Descargar</Button>;
+                    status = <TouchableOpacity onPress={this.downloadSurvey}>
+                        <FontAwesome style={styles.button}>{Icons.cloudDownload}</FontAwesome>
+                    </TouchableOpacity>;
                     break;
             }
         }
@@ -92,6 +95,10 @@ export default class SurveyCard extends Component<ISurveyCardProps, ISurveyCardS
 }
 
 const styles = StyleSheet.create({
+    button: {
+        color: colors.blue,
+        fontSize: 28
+    },
     cardStyle: {
         backgroundColor: colors.white,
         flexDirection: 'row',
@@ -109,10 +116,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.32,
         shadowRadius: 4,
     },
-    check: {
-        color: colors.purple,
-        fontSize: 28
-    },
     leftSide: {
         flex: 2,
     },
@@ -122,8 +125,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
+        color: colors.purple,
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: 'bold'
     },
 });
 
