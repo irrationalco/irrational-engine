@@ -26,7 +26,7 @@ declare namespace engine {
         questions: Question[];
         randomized: boolean;
         questionsPerRun?: number;
-        necesaryQuestions?: Question[];
+        requiredQuestions?: Question[];
     }
 
     const enum QuestionType {

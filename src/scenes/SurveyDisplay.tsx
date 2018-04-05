@@ -8,10 +8,13 @@ import {
     View
 } from 'react-native';
 
+import { NavigationScreenProps } from 'react-navigation';
+
 import {
-    getLocalSurveyList,
-    getSurveyList,
-    saveLocalSurveyList,
+    onQuestionAnswered as onQuestionStateChanged,
+    onSurveyIndexChanged,
+    registerOnSurveyIndexChanged,
+    unregisterOnSurveyIndexChanged
 } from '../Store';
 
 import { colors } from '../Styles';
@@ -26,7 +29,7 @@ interface ISurveyDisplayProps {
 }
 
 
-export default class SurveyDisplay extends Component<ISurveyDisplayProps, ISurveyDisplayState> {
+export default class SurveyDisplay extends Component<NavigationScreenProps<ISurveyDisplayProps>, ISurveyDisplayState> {
 
     static navigationOptions = {
         title: 'Encuesta',
@@ -42,6 +45,8 @@ export default class SurveyDisplay extends Component<ISurveyDisplayProps, ISurve
         return [question, v];
     }
 
+    survey: engine.Survey;
+
     answers: engine.QuestionAnswer[];
     questions: engine.Question[];
     variation: number[];
@@ -51,24 +56,26 @@ export default class SurveyDisplay extends Component<ISurveyDisplayProps, ISurve
         this.state = {
             index: 0
         };
+        this.survey = this.props.navigation.state.params.survey;
+        registerOnSurveyIndexChanged(this.onIndexChanged);
 
-        if (this.props.survey.randomized) {
-            this.answers = Array(this.props.survey.necesaryQuestions.length).fill(null);
-            this.questions = this.collapseQuestions(this.props.survey.necesaryQuestions);
-            const used = Array(this.props.survey.questions.length).fill(false);
-            while (this.questions.length < this.props.survey.questionsPerRun) {
+        if (this.survey.randomized) {
+            this.answers = Array(this.survey.requiredQuestions.length).fill(null);
+            this.questions = this.collapseQuestions(this.survey.requiredQuestions);
+            const used = Array(this.survey.questions.length).fill(false);
+            while (this.questions.length < this.survey.questionsPerRun) {
                 const idx = Math.floor(Math.random() * used.length);
                 if (used[idx]) {
                     continue;
                 }
                 used[idx] = true;
-                const [c, v] = SurveyDisplay.collapseQuestion(this.props.survey.questions[idx]);
+                const [c, v] = SurveyDisplay.collapseQuestion(this.survey.questions[idx]);
                 this.questions.push(c);
                 this.answers.push({ questionId: c.id, type: c.type, variation: v });
             }
         } else {
-            this.answers = Array(this.props.survey.questions.length).fill(null);
-            this.questions = this.collapseQuestions(this.props.survey.questions);
+            this.answers = Array(this.survey.questions.length).fill(null);
+            this.questions = this.collapseQuestions(this.survey.questions);
         }
     }
 
@@ -82,10 +89,29 @@ export default class SurveyDisplay extends Component<ISurveyDisplayProps, ISurve
 
     onQuestionAnswered = (index: number, answer: any) => {
         this.answers[index] = { ...this.answers[index], answer };
+        onQuestionStateChanged(index, true);
+    }
+
+    onIndexChanged = (index: number) => {
+        this.setState({
+            index
+        });
+    }
+
+    nextButtonClicked = () => {
+        this.setState((prev, props) => {
+            onSurveyIndexChanged(prev.index + 1);
+            return { index: prev.index + 1 };
+        });
+
     }
 
     render() {
         return <View></View>;
+    }
+
+    componentWillUnmount() {
+        unregisterOnSurveyIndexChanged(this.onIndexChanged);
     }
 }
 
