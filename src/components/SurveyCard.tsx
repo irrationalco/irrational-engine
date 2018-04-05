@@ -25,6 +25,7 @@ interface ISurveyCardState {
 interface ISurveyCardProps {
     data: engine.SurveyListing;
     onStatusUpdate: (id: number) => void;
+    navigate: (id: number) => void;
 }
 
 enum ErrorStates {
@@ -57,6 +58,11 @@ export default class SurveyCard extends Component<ISurveyCardProps, ISurveyCardS
         this.setState({ downloading: false });
     }
 
+
+    goToSurvey = () => {
+        this.props.navigate(this.props.data.id);
+    }
+
     render() {
         let status: JSX.Element;
         if (this.state.downloading) {
@@ -64,7 +70,7 @@ export default class SurveyCard extends Component<ISurveyCardProps, ISurveyCardS
         } else {
             switch (this.state.data.status) {
                 case engine.SurveyStatus.upToDate:
-                    status = <TouchableOpacity>
+                    status = <TouchableOpacity onPress={this.goToSurvey}>
                         <FontAwesome style={styles.button}>{Icons.check}</FontAwesome>
                     </TouchableOpacity>;
                     break;

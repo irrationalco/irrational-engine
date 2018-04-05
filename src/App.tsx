@@ -8,6 +8,8 @@ import SurveyList from './scenes/SurveyList';
 import { isLoggedIn, registerOnLoginChange } from './Store';
 import { colors } from './Styles';
 
+import SurveyDisplay from './scenes/SurveyDisplay';
+
 interface IAppState {
   isLoggedIn: boolean;
 }
@@ -43,6 +45,9 @@ export default class App extends React.Component<{}, IAppState> {
 }
 
 const AppNavigator = StackNavigator({
+  SurveyDisplay: {
+    screen: SurveyDisplay
+  },
   SurveyList: {
     screen: SurveyList
   }

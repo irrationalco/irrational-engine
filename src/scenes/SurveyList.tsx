@@ -8,7 +8,11 @@ import {
     View
 } from 'react-native';
 
+
+import { NavigationScreenProps } from 'react-navigation';
+
 import {
+    getLocalSurvey,
     getLocalSurveyList,
     getSurveyList,
     saveLocalSurveyList,
@@ -16,8 +20,6 @@ import {
 
 import SurveyCard from '../components/SurveyCard';
 import { colors } from '../Styles';
-
-// const platformBehavior = Platform.OS === 'ios' ? { behavior: 'padding' as 'padding' } : {};
 
 interface ISurveyListState {
     surveys: engine.SurveyListing[];
@@ -35,7 +37,7 @@ const ErrorMessages = new Map([
     [ErrorStates.genericError, 'Ha ocurrido un error por favor vuelva a intentar más tarde']
 ]);
 
-export default class SurveyList extends Component<{}, ISurveyListState> {
+export default class SurveyList extends Component<NavigationScreenProps<{}>, ISurveyListState> {
 
     static navigationOptions = {
         title: 'Encuestas',
@@ -62,6 +64,12 @@ export default class SurveyList extends Component<{}, ISurveyListState> {
             throw Error(`_onRefresh: ${e.message}`);
         }
         this.setState({ refreshing: false });
+    }
+
+    // tslint:disable-next-line:space-before-function-paren
+    navigateToSurvey = async (id: number) => {
+        const survey: engine.Survey = await getLocalSurvey(id);
+        this.props.navigation.navigate('SurveyDisplay', { survey });
     }
 
 
@@ -127,7 +135,10 @@ export default class SurveyList extends Component<{}, ISurveyListState> {
                 }
             >
                 <View style={styles.cards}>
-                    {this.state.surveys.map((survey) => <SurveyCard key={survey.id} data={survey} onStatusUpdate={this.onItemUpdate} />)}
+                    {this.state.surveys.map((survey) => {
+                        return <SurveyCard key={survey.id} data={survey}
+                            onStatusUpdate={this.onItemUpdate} navigate={this.navigateToSurvey} />;
+                    })}
                 </View>
             </ScrollView>;
         } else {
