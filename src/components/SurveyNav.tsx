@@ -25,7 +25,7 @@ export default class SurveyNav extends Component<ISurveyNavProp, ISurveyNavState
         this.state = { currentIdx:0, answered: Array(this.props.size).fill(false)};
     }
 
-    onClick(i){
+    changeIndex(i){
         this.setState({currentIdx:i});
     }
 
@@ -36,7 +36,7 @@ export default class SurveyNav extends Component<ISurveyNavProp, ISurveyNavState
                     {this.state.answered.map((qBtn, index) =>
                         <Button
                             style = { index === this.state.currentIdx ? styles.current : (qBtn ? styles.answered : styles.notanswered)}
-                            onClick={onClick(index)}>
+                            onClick={this.changeIndex(index)}>
                                 <Text>
                                     {index}
                                 </Text>
