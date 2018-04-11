@@ -22,6 +22,8 @@ import { colors } from '../Styles';
 import Button from '../components/Button';
 import SurveyNav from '../components/SurveyNav';
 
+import SingleSelect from '../components/SingleSelect';
+
 interface ISurveyDisplayState {
     index: number;
 }
@@ -89,12 +91,15 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
         });
     }
 
-    onAnswer = (answer: any) => {
-        this.answers[this.state.index] = { ...this.answers[this.state.index], answer };
-        onQuestionAnswered(this.state.index, true);
+    onAnswer = (index: number, answer: any) => {
+        this.answers[index] = { ...this.answers[index], answer };
+        onQuestionAnswered(index, true);
     }
 
     onIndexChanged = (index: number) => {
+        if (index === this.state.index) {
+            return;
+        }
         this.setState({
             index
         });
@@ -102,15 +107,9 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
 
     nextButtonClicked = () => {
         this.setState((prev, props) => {
-            onSurveyIndexChanged(prev.index + 1);
             return { index: prev.index + 1 };
-        });
-    }
-
-    prevButtonClicked = () => {
-        this.setState((prev, props) => {
-            onSurveyIndexChanged(prev.index - 1);
-            return { index: prev.index - 1 };
+        }, () => {
+            onSurveyIndexChanged(this.state.index);
         });
     }
 
@@ -120,6 +119,10 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
             case engine.QuestionType.open:
                 break;
             case engine.QuestionType.singleSelect:
+                question = <SingleSelect question={this.questions[this.state.index]}
+                    index={this.state.index}
+                    onAnswer={this.onAnswer}
+                    previousAnswer={this.answers[this.state.index].answer} />;
                 break;
             case engine.QuestionType.multipleSelect:
                 break;
@@ -137,9 +140,6 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
             {question}
             <Button onClick={this.nextButtonClicked}>
                 <Text>Siguiente</Text>
-            </Button>
-            <Button onClick={this.prevButtonClicked}>
-                <Text>Atras</Text>
             </Button>
         </View>;
     }

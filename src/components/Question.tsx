@@ -8,11 +8,13 @@ interface IQuestionState<T> {
 
 interface IQuestionProps<T> {
     question: engine.Question;
-    onAnswer: (answer: any) => void;
-    previousAnswer?: T;
+    onAnswer: (index: number, answer: any) => void;
+    previousAnswer: T | null;
+    index: number;
 }
 
-export default class Question<QuestionType, AnswerType> extends Component<IQuestionProps<AnswerType>, IQuestionState<AnswerType>>{
+export default class Question<QuestionType extends engine.Variation, AnswerType>
+    extends Component<IQuestionProps<AnswerType>, IQuestionState<AnswerType>>{
 
     data: QuestionType;
 
@@ -27,7 +29,7 @@ export default class Question<QuestionType, AnswerType> extends Component<IQuest
         registerOnSurveyIndexChanged(this.saveAnswer);
     }
 
-    saveAnswer = (index) => { this.props.onAnswer(this.state.answer); };
+    saveAnswer = (index) => { this.props.onAnswer(index, this.state.answer); };
 
     componentWillUnmount() {
         unregisterOnSurveyIndexChanged(this.saveAnswer);
