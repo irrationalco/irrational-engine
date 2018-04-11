@@ -20,6 +20,7 @@ import {
 import { colors } from '../Styles';
 
 import Button from '../components/Button';
+import SurveyNav from '../components/SurveyNav';
 
 interface ISurveyDisplayState {
     index: number;
@@ -132,6 +133,7 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
                 break;
         }
         return <View>
+            <SurveyNav size={this.questions.length} />
             {question}
             <Button onClick={this.nextButtonClicked}>
                 <Text>Siguiente</Text>
