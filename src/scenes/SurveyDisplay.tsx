@@ -11,7 +11,7 @@ import {
 import { NavigationScreenProps } from 'react-navigation';
 
 import {
-    onQuestionAnswered as onQuestionStateChanged,
+    onQuestionAnswered,
     onSurveyIndexChanged,
     registerOnSurveyIndexChanged,
     unregisterOnSurveyIndexChanged
@@ -19,6 +19,7 @@ import {
 
 import { colors } from '../Styles';
 
+import Button from '../components/Button';
 
 interface ISurveyDisplayState {
     index: number;
@@ -87,9 +88,9 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
         });
     }
 
-    onQuestionAnswered = (index: number, answer: any) => {
-        this.answers[index] = { ...this.answers[index], answer };
-        onQuestionStateChanged(index, true);
+    onAnswer = (answer: any) => {
+        this.answers[this.state.index] = { ...this.answers[this.state.index], answer };
+        onQuestionAnswered(this.state.index, true);
     }
 
     onIndexChanged = (index: number) => {
@@ -103,11 +104,42 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
             onSurveyIndexChanged(prev.index + 1);
             return { index: prev.index + 1 };
         });
+    }
 
+    prevButtonClicked = () => {
+        this.setState((prev, props) => {
+            onSurveyIndexChanged(prev.index - 1);
+            return { index: prev.index - 1 };
+        });
     }
 
     render() {
-        return <View></View>;
+        let question: JSX.Element;
+        switch (this.questions[this.state.index].type) {
+            case engine.QuestionType.open:
+                break;
+            case engine.QuestionType.singleSelect:
+                break;
+            case engine.QuestionType.multipleSelect:
+                break;
+            case engine.QuestionType.slider:
+                break;
+            case engine.QuestionType.stars:
+                break;
+            case engine.QuestionType.like:
+                break;
+            case engine.QuestionType.comparativeSliders:
+                break;
+        }
+        return <View>
+            {question}
+            <Button onClick={this.nextButtonClicked}>
+                <Text>Siguiente</Text>
+            </Button>
+            <Button onClick={this.prevButtonClicked}>
+                <Text>Atras</Text>
+            </Button>
+        </View>;
     }
 
     componentWillUnmount() {
