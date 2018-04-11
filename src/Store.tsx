@@ -119,6 +119,22 @@ export async function getLocalSurveyList(): Promise<engine.SurveyListing[]> {
     }
 }
 
+async function downloadQuestion(qArray: engine.Question[], docs: firebase.firestore.DocumentSnapshot[], route: string) {
+    const pArray: Promise<firebase.firestore.QuerySnapshot>[] = new Array(qArray.length);
+    for (let i = 0; i < docs.length; i++) {
+        qArray[i] = docs[i].data() as engine.Question;
+        pArray[i] = firestore.collection(`${route}/${docs[i].id}/variations`).get();
+    }
+
+    for (let i = 0; i < pArray.length; i++) {
+        const variations = (await pArray[i]).docs;
+        qArray[i].variations = new Array(variations.length);
+        for (let j = 0; j < variations.length; j++) {
+            qArray[i].variations[j] = variations[j].data() as engine.Variation;
+        }
+    }
+}
+
 export async function getSurveyById(id: number) {
     try {
         const user = await getLocalUser();
@@ -127,14 +143,19 @@ export async function getSurveyById(id: number) {
         const survPromise = firestore.doc(route).get();
         const questionsPromise = firestore.collection(`${route}/questions`).get();
         const survey = (await survPromise).data() as engine.Survey;
+        const waitForAll = [];
         if (survey.randomized) {
-            survey.requiredQuestions = (await firestore.collection(`${route}/requiredQuestions`).get()).docs.map((doc) => {
-                return doc.data() as engine.Question;
-            });
+            const rq = (await firestore.collection(`${route}/requiredQuestions`).get()).docs;
+            survey.requiredQuestions = new Array(rq.length);
+            waitForAll.push(downloadQuestion(survey.requiredQuestions, rq, `${route}/requiredQuestions`));
         }
-        survey.questions = (await questionsPromise).docs.map((doc) => {
-            return doc.data() as engine.Question;
-        });
+        const q = (await questionsPromise).docs;
+        survey.questions = new Array(q.length);
+        waitForAll.push(downloadQuestion(survey.questions, q, `${route}/questions`));
+
+        for (const promise of waitForAll) {
+            await promise;
+        }
 
         return survey;
     } catch (e) {
