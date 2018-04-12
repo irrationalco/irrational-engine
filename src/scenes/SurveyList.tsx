@@ -5,6 +5,7 @@ import {
     ScrollView,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View
 } from 'react-native';
 
@@ -17,6 +18,8 @@ import {
     getSurveyList,
     saveLocalSurveyList,
 } from '../Store';
+
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 import SurveyCard from '../components/SurveyCard';
 import { colors } from '../Styles';
@@ -40,6 +43,10 @@ const ErrorMessages = new Map([
 export default class SurveyList extends Component<NavigationScreenProps<{}>, ISurveyListState> {
 
     static navigationOptions = {
+        headerRight:
+            <TouchableOpacity onPress={() => {}} style={{margin:10}}>
+                <FontAwesome style={ {fontSize:28, color: colors.purple} }>{Icons.cloudUpload}</FontAwesome>
+            </TouchableOpacity>,
         title: 'Encuestas',
     };
 
@@ -180,6 +187,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         justifyContent: 'center'
-    }
+    },
+    up:{
+        color: colors.blue,
+        fontSize: 28
+    },
 });
 

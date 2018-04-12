@@ -3,7 +3,6 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TextStyle,
     View
 } from 'react-native';
 
@@ -38,12 +37,12 @@ export default class SurveyNav extends Component<ISurveyNavProp, ISurveyNavState
                 <View style={styles.slide}>
                     {this.state.answered.map((qBtn, index) =>
                         <Button
-                            style={index === this.state.currentIdx ? styles.current : (qBtn ? styles.answered : styles.notanswered)}
                             key={index}
-                            onClick={this.changeIndex.bind(this, index)}>
-                            <Text>
-                                {index + 1}
-                            </Text>
+                            style = { index === this.state.currentIdx ? styles.current : (qBtn ? styles.answered : styles.notanswered)}
+                            onClick = { this.changeIndex.bind(this, index) }>
+                                <Text>
+                                    {index + 1 }
+                                </Text>
                         </Button>)}
                 </View>
             </ScrollView>
@@ -60,16 +59,32 @@ const original = {
 
 const styles = StyleSheet.create({
     answered: {
-        ...original,
-        borderColor: 'rgba(0,255,0,0.2)',
+        // backgroundColor: '#F5FCFF',
+        backgroundColor: 'transparent',
+        borderColor:'rgba(0,255,0,0.2)',
+        borderRadius:500,
+        borderWidth:1,
+        flex: 1,
+        // alignItems:'center',
+        // flexDirection:'row',
+        // opacity: 70,
+        // flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
     current: {
-        ...original,
-        borderColor: 'rgba(0,0,255,0.2)',
+        backgroundColor: 'transparent',
+        borderColor:'rgba(0,0,255,0.2)',
+        borderRadius:500,
+        borderWidth:1,
+        flex: 1,
     },
     notanswered: {
-        ...original,
-        borderColor: 'rgba(255,0,0,0.2)',
+        backgroundColor: 'transparent',
+        borderColor:'rgba(255,0,0,0.2)',
+        borderRadius:500,
+        borderWidth:1,
+        flex: 1,
     },
     slide: {
         flexDirection: 'row',
