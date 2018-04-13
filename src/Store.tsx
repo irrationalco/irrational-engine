@@ -70,7 +70,6 @@ export async function logOut() {
         const startSignOut = auth.signOut();
         const startEraseAll = AsyncStorage.clear();
         await startSignOut;
-        // const startEraseAll = AsyncStorage.removeItem('user');
         await startEraseAll;
         await setLoginState(false);
     } catch (e) {
