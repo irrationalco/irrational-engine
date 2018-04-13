@@ -6,9 +6,9 @@ import {
     View
 } from 'react-native';
 
-import { registerOnSurveyIndexChanged } from '../Store';
+import { onSurveyIndexChanged, registerOnSurveyIndexChanged } from '../Store';
 
-import Button from './Button';
+import Link from './Link';
 
 interface ISurveyNavProp {
     size: number;
@@ -28,7 +28,12 @@ export default class SurveyNav extends Component<ISurveyNavProp, ISurveyNavState
     }
 
     changeIndex = (idx: number) => {
-        this.setState({ currentIdx: idx });
+        if (idx === this.state.currentIdx) {
+            return;
+        }
+        this.setState({ currentIdx: idx }, () => {
+            onSurveyIndexChanged(this.state.currentIdx);
+        });
     }
 
     render() {
@@ -36,14 +41,14 @@ export default class SurveyNav extends Component<ISurveyNavProp, ISurveyNavState
             <ScrollView horizontal={true}>
                 <View style={styles.slide}>
                     {this.state.answered.map((qBtn, index) =>
-                        <Button
+                        <Link
+                            style={index === this.state.currentIdx ? styles.current : (qBtn ? styles.answered : styles.notanswered)}
                             key={index}
-                            style = { index === this.state.currentIdx ? styles.current : (qBtn ? styles.answered : styles.notanswered)}
-                            onClick = { this.changeIndex.bind(this, index) }>
-                                <Text>
-                                    {index + 1 }
-                                </Text>
-                        </Button>)}
+                            onClick={this.changeIndex.bind(this, index)}>
+                            <Text>
+                                {index + 1}
+                            </Text>
+                        </Link>)}
                 </View>
             </ScrollView>
         );
@@ -51,19 +56,29 @@ export default class SurveyNav extends Component<ISurveyNavProp, ISurveyNavState
 }
 
 const original = {
-    backgroundColor: 'transparent',
-    borderRadius: 500,
+    // backgroundColor: 'transparent',
+    // // borderRadius: 500,
+    // // borderWidth: 1,
+    // // flex: 1,
+    // width: 40,
+    // height: 40,
+    // padding: 0
+    borderRadius: 35,
     borderWidth: 1,
-    flex: 1,
+    height: 35,
+    width: 35,
+    justifyContent: 'center' as 'center',
+    alignItems: 'center' as 'center',
+    marginLeft: 10
 };
 
 const styles = StyleSheet.create({
     answered: {
         // backgroundColor: '#F5FCFF',
         backgroundColor: 'transparent',
-        borderColor:'rgba(0,255,0,0.2)',
-        borderRadius:500,
-        borderWidth:1,
+        borderColor: 'rgba(0,255,0,0.2)',
+        borderRadius: 500,
+        borderWidth: 1,
         flex: 1,
         // alignItems:'center',
         // flexDirection:'row',
@@ -74,16 +89,16 @@ const styles = StyleSheet.create({
     },
     current: {
         backgroundColor: 'transparent',
-        borderColor:'rgba(0,0,255,0.2)',
-        borderRadius:500,
-        borderWidth:1,
+        borderColor: 'rgba(0,0,255,0.2)',
+        borderRadius: 500,
+        borderWidth: 1,
         flex: 1,
     },
     notanswered: {
         backgroundColor: 'transparent',
-        borderColor:'rgba(255,0,0,0.2)',
-        borderRadius:500,
-        borderWidth:1,
+        borderColor: 'rgba(255,0,0,0.2)',
+        borderRadius: 500,
+        borderWidth: 1,
         flex: 1,
     },
     slide: {
