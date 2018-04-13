@@ -9,7 +9,6 @@ import {
     View
 } from 'react-native';
 
-
 import { NavigationScreenProps } from 'react-navigation';
 
 import {
@@ -43,10 +42,11 @@ const ErrorMessages = new Map([
 export default class SurveyList extends Component<NavigationScreenProps<{}>, ISurveyListState> {
 
     static navigationOptions = {
-        headerRight:
-            <TouchableOpacity onPress={() => {}} style={{margin:10}}>
-                <FontAwesome style={ {fontSize:28, color: colors.purple} }>{Icons.cloudUpload}</FontAwesome>
-            </TouchableOpacity>,
+        // headerRight:
+        // // Important to note that the ONPRESS button of upload all is not implemented yet.
+        //     <TouchableOpacity onPress={() => {}} style={{margin:10}}>
+        //         <FontAwesome style={ {fontSize:28, color: colors.purple} }>{Icons.cloudUpload}</FontAwesome>
+        //     </TouchableOpacity>,
         title: 'Encuestas',
     };
 
