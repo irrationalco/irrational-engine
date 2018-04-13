@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { ViewStyle } from 'react-native';
 
 import { registerOnSurveyIndexChanged, unregisterOnSurveyIndexChanged } from '../Store';
 
@@ -11,6 +12,7 @@ interface IQuestionProps<T> {
     onAnswer: (index: number, answer: any) => void;
     previousAnswer: T | null;
     index: number;
+    style?: ViewStyle;
 }
 
 export default class Question<QuestionType extends engine.Variation, AnswerType>
