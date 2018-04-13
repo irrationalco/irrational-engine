@@ -18,8 +18,6 @@ import {
     saveLocalSurveyList,
 } from '../Store';
 
-import FontAwesome, { Icons } from 'react-native-fontawesome';
-
 import SurveyCard from '../components/SurveyCard';
 import { colors } from '../Styles';
 
