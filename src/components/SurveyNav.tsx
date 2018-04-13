@@ -56,13 +56,6 @@ export default class SurveyNav extends Component<ISurveyNavProp, ISurveyNavState
 }
 
 const original = {
-    // backgroundColor: 'transparent',
-    // // borderRadius: 500,
-    // // borderWidth: 1,
-    // // flex: 1,
-    // width: 40,
-    // height: 40,
-    // padding: 0
     borderRadius: 35,
     borderWidth: 1,
     height: 35,

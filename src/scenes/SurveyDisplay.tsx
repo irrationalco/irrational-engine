@@ -122,7 +122,8 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
                 question = <SingleSelect question={this.questions[this.state.index]}
                     index={this.state.index}
                     onAnswer={this.onAnswer}
-                    previousAnswer={this.answers[this.state.index].answer} />;
+                    previousAnswer={this.answers[this.state.index].answer}
+                    style={styles.question} />;
                 break;
             case engine.QuestionType.multipleSelect:
                 break;
@@ -135,9 +136,13 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
             case engine.QuestionType.comparativeSliders:
                 break;
         }
-        return <View>
-            <SurveyNav size={this.questions.length} />
-            {question}
+        return <View style={styles.container}>
+            <View>
+                <SurveyNav size={this.questions.length} />
+            </View>
+            <ScrollView style={styles.questionContainer}>
+                {question}
+            </ScrollView>
             <Button onClick={this.nextButtonClicked}>
                 <Text>Siguiente</Text>
             </Button>
@@ -150,6 +155,16 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+        marginHorizontal: 8,
+        marginVertical: 10
+    },
+    question: {
+        flex: 1,
+    },
+    questionContainer: {
+        marginVertical: 10
+    }
 });
 

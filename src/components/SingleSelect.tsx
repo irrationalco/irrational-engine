@@ -28,7 +28,7 @@ export default class SingleSelect extends Question<engine.SingleSelect, number>{
     }
 
     render() {
-        return <View>
+        return <View style={this.props.style}>
             <Text>{this.data.title}</Text>
             <View>
                 <RadioForm
