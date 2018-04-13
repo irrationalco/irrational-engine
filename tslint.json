@@ -58,7 +58,6 @@
         ],
         "no-duplicate-imports": true,
         "no-require-imports": true,
-        "object-literal-sort-keys": true,
         "prefer-const": true,
         "prefer-readonly": true,
         "trailing-comma": [
