@@ -42,11 +42,8 @@ export default class App extends React.Component<{}, IAppState> {
   }
 
 
-  logout = () => {
-    this.setState({
-      isLoggedIn: false
-    });
-    logOut();
+  async logout() {
+    await logOut();
   }
 
   render() {
