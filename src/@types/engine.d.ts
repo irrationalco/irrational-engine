@@ -46,6 +46,7 @@ declare namespace engine {
     }
 
     interface Variation {
+        id: number;
         title?: string;
         image?: string; //for now
         imageDescription?: string;

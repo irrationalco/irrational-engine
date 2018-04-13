@@ -1,14 +1,18 @@
-import { AppRegistry } from 'react-native';
+import { AppRegistry, Text, TouchableOpacity } from 'react-native';
 
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
+import Button from './components/Button';
 import LogIn from './scenes/LogIn';
 import SurveyList from './scenes/SurveyList';
-import { isLoggedIn, registerOnLoginChange } from './Store';
+import { isLoggedIn, logOut, registerOnLoginChange } from './Store';
 import { colors } from './Styles';
 
 import SurveyDisplay from './scenes/SurveyDisplay';
+
+// tslint:disable-next-line:prefer-const
+var self;
 
 interface IAppState {
   isLoggedIn: boolean;
@@ -21,6 +25,7 @@ export default class App extends React.Component<{}, IAppState> {
     this.state = {
       isLoggedIn: false
     };
+    self = this;
     registerOnLoginChange(this.onLoginChange);
   }
 
@@ -36,6 +41,14 @@ export default class App extends React.Component<{}, IAppState> {
     });
   }
 
+
+  logout = () => {
+    this.setState({
+      isLoggedIn: false
+    });
+    logOut();
+  }
+
   render() {
     if (this.state.isLoggedIn) {
       return <AppNavigator />;
@@ -44,19 +57,31 @@ export default class App extends React.Component<{}, IAppState> {
   }
 }
 
-const AppNavigator = StackNavigator({
-  SurveyDisplay: {
-    screen: SurveyDisplay
+const AppNavigator = StackNavigator(
+  {
+    SurveyDisplay: {
+      screen: SurveyDisplay
+    },
+    SurveyList: {
+      screen: SurveyList
+    }
   },
-  SurveyList: {
-    screen: SurveyList
-  }
-}, {
+  {
     cardStyle: {
       backgroundColor: colors.white
     },
     // headerMode: 'none',
     initialRouteName: 'SurveyList',
-  });
+    navigationOptions: {
+      headerRight:
+        // Add this pink to styles
+        <Button style={{backgroundColor: '#ff66cc', margin: 15}} onClick={() => {
+          self.logout();
+        }} >
+          <Text>Salir</Text>
+        </Button >,
+    },
+  }
+);
 
 AppRegistry.registerComponent('App', () => App);

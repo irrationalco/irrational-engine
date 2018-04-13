@@ -11,7 +11,7 @@ import {
 import { NavigationScreenProps } from 'react-navigation';
 
 import {
-    onQuestionAnswered as onQuestionStateChanged,
+    onQuestionAnswered,
     onSurveyIndexChanged,
     registerOnSurveyIndexChanged,
     unregisterOnSurveyIndexChanged
@@ -19,6 +19,10 @@ import {
 
 import { colors } from '../Styles';
 
+import Button from '../components/Button';
+import SurveyNav from '../components/SurveyNav';
+
+import SingleSelect from '../components/SingleSelect';
 
 interface ISurveyDisplayState {
     index: number;
@@ -87,12 +91,15 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
         });
     }
 
-    onQuestionAnswered = (index: number, answer: any) => {
+    onAnswer = (index: number, answer: any) => {
         this.answers[index] = { ...this.answers[index], answer };
-        onQuestionStateChanged(index, true);
+        onQuestionAnswered(index, true);
     }
 
     onIndexChanged = (index: number) => {
+        if (index === this.state.index) {
+            return;
+        }
         this.setState({
             index
         });
@@ -100,14 +107,41 @@ export default class SurveyDisplay extends Component<NavigationScreenProps<ISurv
 
     nextButtonClicked = () => {
         this.setState((prev, props) => {
-            onSurveyIndexChanged(prev.index + 1);
             return { index: prev.index + 1 };
+        }, () => {
+            onSurveyIndexChanged(this.state.index);
         });
-
     }
 
     render() {
-        return <View></View>;
+        let question: JSX.Element;
+        switch (this.questions[this.state.index].type) {
+            case engine.QuestionType.open:
+                break;
+            case engine.QuestionType.singleSelect:
+                question = <SingleSelect question={this.questions[this.state.index]}
+                    index={this.state.index}
+                    onAnswer={this.onAnswer}
+                    previousAnswer={this.answers[this.state.index].answer} />;
+                break;
+            case engine.QuestionType.multipleSelect:
+                break;
+            case engine.QuestionType.slider:
+                break;
+            case engine.QuestionType.stars:
+                break;
+            case engine.QuestionType.like:
+                break;
+            case engine.QuestionType.comparativeSliders:
+                break;
+        }
+        return <View>
+            <SurveyNav size={this.questions.length} />
+            {question}
+            <Button onClick={this.nextButtonClicked}>
+                <Text>Siguiente</Text>
+            </Button>
+        </View>;
     }
 
     componentWillUnmount() {
