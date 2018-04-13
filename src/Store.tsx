@@ -67,9 +67,12 @@ export async function tryLogin(username: string, password: string) {
 
 export async function logOut() {
     try {
-        const logOutPromise = auth.signOut();
-        await AsyncStorage.removeItem('user');
-        await logOutPromise;
+        const startSignOut = auth.signOut();
+        const startEraseAll = AsyncStorage.clear();
+        await startSignOut;
+        // const startEraseAll = AsyncStorage.removeItem('user');
+        await startEraseAll;
+        await setLoginState(false);
     } catch (e) {
         throw Error(`Couldn't log out ${e.message}`);
     }
