@@ -67,32 +67,16 @@ const original = {
 
 const styles = StyleSheet.create({
     answered: {
-        // backgroundColor: '#F5FCFF',
-        backgroundColor: 'transparent',
+        ...original,
         borderColor: 'rgba(0,255,0,0.2)',
-        borderRadius: 500,
-        borderWidth: 1,
-        flex: 1,
-        // alignItems:'center',
-        // flexDirection:'row',
-        // opacity: 70,
-        // flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
     },
     current: {
-        backgroundColor: 'transparent',
+        ...original,
         borderColor: 'rgba(0,0,255,0.2)',
-        borderRadius: 500,
-        borderWidth: 1,
-        flex: 1,
     },
     notanswered: {
-        backgroundColor: 'transparent',
+        ...original,
         borderColor: 'rgba(255,0,0,0.2)',
-        borderRadius: 500,
-        borderWidth: 1,
-        flex: 1,
     },
     slide: {
         flexDirection: 'row',

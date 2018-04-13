@@ -55,12 +55,12 @@ export async function tryLogin(username: string, password: string) {
     try {
         const fbUser: firebase.User = await auth.signInWithEmailAndPassword(username, password);
         const user = await getUserById(fbUser.uid);
-        saveLocalUser(user);
-        setLoginState(true);
+        await saveLocalUser(user);
+        await setLoginState(true);
     } catch (e) {
         const error: any = Error(`tryLogin: ${(e as Error).message}`);
         error.code = e.code || 'auth/generic-error';
-        setLoginState(false);
+        await setLoginState(false);
         throw error;
     }
 }
