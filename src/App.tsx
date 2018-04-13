@@ -1,4 +1,4 @@
-import { AppRegistry, Text, TouchableOpacity } from 'react-native';
+import { Alert, AppRegistry, Text, TouchableOpacity } from 'react-native';
 
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
@@ -75,8 +75,18 @@ const AppNavigator = StackNavigator(
     navigationOptions: {
       headerRight:
         // Add this pink to styles
-        <Button style={{backgroundColor: '#ff66cc', margin: 15}} onClick={() => {
-          self.logout();
+        <Button style={{backgroundColor: colors.red, margin: 15}} onClick={() => {
+          Alert.alert(
+            'Estás seguro que quieres salir?',
+            'Se borrarán todos tus datos si presiona Salir',
+          [
+            {text: 'Salir', onPress: () => {
+              self.logout();
+            }},
+            {text: 'Cancelar'}
+           ],
+           { onDismiss: () => {} }
+          );
         }} >
           <Text>Salir</Text>
         </Button >,
