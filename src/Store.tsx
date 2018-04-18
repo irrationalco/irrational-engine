@@ -55,21 +55,23 @@ export async function tryLogin(username: string, password: string) {
     try {
         const fbUser: firebase.User = await auth.signInWithEmailAndPassword(username, password);
         const user = await getUserById(fbUser.uid);
-        saveLocalUser(user);
-        setLoginState(true);
+        await saveLocalUser(user);
+        await setLoginState(true);
     } catch (e) {
         const error: any = Error(`tryLogin: ${(e as Error).message}`);
         error.code = e.code || 'auth/generic-error';
-        setLoginState(false);
+        await setLoginState(false);
         throw error;
     }
 }
 
 export async function logOut() {
     try {
-        const logOutPromise = auth.signOut();
-        await AsyncStorage.removeItem('user');
-        await logOutPromise;
+        const startSignOut = auth.signOut();
+        const startEraseAll = AsyncStorage.clear();
+        await startSignOut;
+        await startEraseAll;
+        await setLoginState(false);
     } catch (e) {
         throw Error(`Couldn't log out ${e.message}`);
     }

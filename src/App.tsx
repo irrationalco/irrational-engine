@@ -1,9 +1,11 @@
-import { AppRegistry, Text, TouchableOpacity } from 'react-native';
+import { Alert, AppRegistry, Text, TouchableOpacity } from 'react-native';
 
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
-import Button from './components/Button';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
+
+import Link from './components/Link';
 import LogIn from './scenes/LogIn';
 import SurveyList from './scenes/SurveyList';
 import { isLoggedIn, logOut, registerOnLoginChange } from './Store';
@@ -42,11 +44,8 @@ export default class App extends React.Component<{}, IAppState> {
   }
 
 
-  logout = () => {
-    this.setState({
-      isLoggedIn: false
-    });
-    logOut();
+  async logout() {
+    await logOut();
   }
 
   render() {
@@ -75,11 +74,21 @@ const AppNavigator = StackNavigator(
     navigationOptions: {
       headerRight:
         // Add this pink to styles
-        <Button style={{backgroundColor: '#ff66cc', margin: 15}} onClick={() => {
-          self.logout();
+        <Link style= {{margin: 15}} onClick={() => {
+          Alert.alert(
+            'Estás seguro que quieres salir?',
+            'Se borrarán todos tus datos si presionas Salir',
+          [
+            {text: 'Salir', onPress: () => {
+              self.logout();
+            }},
+            {text: 'Cancelar'}
+           ],
+           { onDismiss: () => {} }
+          );
         }} >
-          <Text>Salir</Text>
-        </Button >,
+          <FontAwesome style={{color: colors.red, fontSize: 28}}>{Icons.signOut}</FontAwesome>
+        </Link >,
     },
   }
 );
